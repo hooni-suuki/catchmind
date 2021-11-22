@@ -1,0 +1,157 @@
+// JavaObjClient.java
+// ObjecStream �궗�슜�븯�뒗 梨꾪똿 Client
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import dao.UserDao;
+import model.User;
+import mybatis.Mybatis_User;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
+
+public class JavaGameClientMain extends JFrame {
+	
+	UserDao userDao = new UserDao(Mybatis_User.getSqlSessionFactory());
+	User user = new User();
+	
+	private static final long serialVersionUID = 1L;
+	private JTextField txtUserName;
+	private JTextField txtPassword;
+	private JFrame frame;
+
+	private ImageIcon TitleImg = new ImageIcon("src/image/lbimg.png");
+    Image img = TitleImg.getImage();
+	Image updateImg = img.getScaledInstance(500, 263, Image.SCALE_SMOOTH);
+	ImageIcon updateIcon = new ImageIcon(updateImg);
+
+	public JavaGameClientMain() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 891, 579);
+		setResizable(false);
+		setLocationRelativeTo(null);
+		
+		JPanel contentPane = new JPanel() {
+			public void paint(Graphics g) {
+				Image MainScreen = new ImageIcon("src/image/mainimg.jpeg").getImage();
+				Dimension d = getSize();
+				g.drawImage(MainScreen, 0, 0,d.width,d.height, null);
+				setOpaque(false);
+				super.paint(g);
+			}
+		};
+		
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JPanel ComponentPanel = new JPanel(); // attached all componenet 
+		ComponentPanel.setBounds(109, 114, 704, 373);
+		contentPane.add(ComponentPanel);
+		ComponentPanel.setOpaque(false);
+		ComponentPanel.setLayout(null);
+		
+		txtUserName = new JTextField();
+		txtUserName.setBounds(311, 189, 204, 32);
+		ComponentPanel.add(txtUserName);
+		txtUserName.setHorizontalAlignment(SwingConstants.CENTER);
+		txtUserName.setColumns(10);
+		
+		txtPassword = new JTextField();
+		txtPassword.setBounds(311, 247, 204, 33);
+		ComponentPanel.add(txtPassword);
+		txtPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		txtPassword.setColumns(10);
+		
+		JLabel lbUsername = new JLabel("User Name");
+		lbUsername.setBounds(202, 188, 82, 33);
+		ComponentPanel.add(lbUsername);
+		
+		JLabel lblIpAddress = new JLabel("Password");
+		lblIpAddress.setBounds(217, 247, 82, 33);
+		ComponentPanel.add(lblIpAddress);
+		
+		JButton btnConnect = new JButton("Connect");
+		btnConnect.setBounds(258, 325, 205, 38);
+		ComponentPanel.add(btnConnect);
+		
+		JLabel title = new JLabel(updateIcon);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setBounds(190, 10, 312, 131);
+		ComponentPanel.add(title);
+		
+		JButton exitBtn = new JButton("EXIT");
+		exitBtn.setBounds(759, 494, 106, 38);
+		contentPane.add(exitBtn);
+		
+		JButton backBtn = new JButton("Back");
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StartView Init = new StartView();
+				//Init.setVisible(true);
+			}
+		});
+		
+		backBtn.setBounds(12, 509, 95, 23);
+		contentPane.add(backBtn);
+
+		exitBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+		});
+		
+		Myaction action = new Myaction();
+//		txtPassword.addActionListener(action);
+//		txtUserName.addActionListener(action); �씠嫄� �몢以� �쓽誘멸� 萸먯�
+		
+		btnConnect.addActionListener(action); //connect
+	}
+	
+	class Myaction implements ActionListener 
+	{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		//	List<User> userlist =userDao.selectAll(); 
+			user= userDao.selectByID(1);
+			String username = txtUserName.getText().trim();
+			String password = txtPassword.getText().trim();
+			String ip_addr = "127.0.0.1";
+			String port_no = "30000";
+			
+			try {
+				if(!user.getName().equals(username)) {
+					JOptionPane.showMessageDialog(null, "계정이 틀렸어.");
+				}
+				else {
+					JavaGameClientView view = new JavaGameClientView(username, ip_addr, port_no);
+					setVisible(false);
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+				JOptionPane.showMessageDialog(null, "뭐가문제징");
+			}
+		
+			
+		}
+	}
+}
+
+
