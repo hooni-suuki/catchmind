@@ -49,7 +49,6 @@ public class JavaGameClientView extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtInput;
 	private String UserName;
 	private JButton btnSend;
 	private static final int BUF_LEN = 128; // Windows 泥섎읆 BUF_LEN �쓣 �젙�쓽
@@ -61,8 +60,6 @@ public class JavaGameClientView extends JFrame {
 
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
-
-	private JLabel lblUserName;
 	// private JTextArea textArea;
 	private JTextPane textArea;
 
@@ -102,40 +99,26 @@ public class JavaGameClientView extends JFrame {
 		contentPane.setLayout(null);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 10, 352, 471);
+		scrollPane.setBounds(238, 488, 303, 107);
 		contentPane.add(scrollPane);
-
-		textArea = new JTextPane();
-		textArea.setEditable(true);
-		textArea.setFont(new Font("援대┝泥�", Font.PLAIN, 14));
-		scrollPane.setViewportView(textArea);
-
-		txtInput = new JTextField();
-		txtInput.setBounds(74, 489, 209, 40);
-		contentPane.add(txtInput);
-		txtInput.setColumns(10);
+		
+				textArea = new JTextPane();
+				scrollPane.setViewportView(textArea);
+				textArea.setEditable(true);
+				textArea.setFont(new Font("援대┝泥�", Font.PLAIN, 14));
 
 		btnSend = new JButton("Send");
 		btnSend.setFont(new Font("援대┝", Font.PLAIN, 14));
-		btnSend.setBounds(295, 489, 69, 40);
+		btnSend.setBounds(549, 555, 69, 40);
 		contentPane.add(btnSend);
-
-		lblUserName = new JLabel("Name");
-		lblUserName.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblUserName.setBackground(Color.WHITE);
-		lblUserName.setFont(new Font("援대┝", Font.BOLD, 14));
-		lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUserName.setBounds(12, 539, 62, 40);
-		contentPane.add(lblUserName);
 		setVisible(true);
 
 		AppendText("User " + username + " connecting " + ip_addr + " " + port_no);
 		UserName = username;
-		lblUserName.setText(username);
 
 		imgBtn = new JButton("+");
 		imgBtn.setFont(new Font("援대┝", Font.PLAIN, 16));
-		imgBtn.setBounds(12, 489, 50, 40);
+		imgBtn.setBounds(176, 555, 50, 40);
 		contentPane.add(imgBtn);
 
 		JButton btnNewButton = new JButton("醫� 猷�");
@@ -147,13 +130,13 @@ public class JavaGameClientView extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnNewButton.setBounds(295, 539, 69, 40);
+		btnNewButton.setBounds(549, 488, 69, 40);
 		contentPane.add(btnNewButton);
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(376, 10, 400, 520);
+		panel.setBounds(176, 32, 442, 381);
 		contentPane.add(panel);
 		gc = panel.getGraphics();
 		
@@ -170,8 +153,44 @@ public class JavaGameClientView extends JFrame {
 		lblMouseEvent.setFont(new Font("援대┝", Font.BOLD, 14));
 		lblMouseEvent.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblMouseEvent.setBackground(Color.WHITE);
-		lblMouseEvent.setBounds(376, 539, 400, 40);
+		lblMouseEvent.setBounds(176, 438, 442, 40);
 		contentPane.add(lblMouseEvent);
+		
+		JLabel user_label_01 = new JLabel("user_name_01");
+		user_label_01.setBounds(22, 171, 135, 15);
+		contentPane.add(user_label_01);
+		
+		JLabel user_label_02 = new JLabel("user_name_02");
+		user_label_02.setBounds(22, 373, 135, 15);
+		contentPane.add(user_label_02);
+		
+		JLabel user_label_03 = new JLabel("user_name_03");
+		user_label_03.setBounds(638, 171, 135, 15);
+		contentPane.add(user_label_03);
+		
+		JLabel user_label_04 = new JLabel("user_name_04");
+		user_label_04.setBounds(638, 373, 135, 15);
+		contentPane.add(user_label_04);
+		
+		JPanel user_panel_01 = new JPanel();
+		user_panel_01.setBounds(22, 32, 135, 125);
+		contentPane.add(user_panel_01);
+		
+		JPanel user_panel_03 = new JPanel();
+		user_panel_03.setBounds(638, 32, 135, 125);
+		contentPane.add(user_panel_03);
+		
+		JPanel user_panel_02 = new JPanel();
+		user_panel_02.setBounds(22, 238, 135, 125);
+		contentPane.add(user_panel_02);
+		
+		JPanel user_panel_04 = new JPanel();
+		user_panel_04.setBounds(638, 238, 135, 125);
+		contentPane.add(user_panel_04);
+		
+		JButton exit_btn = new JButton("EXIT");
+		exit_btn.setBounds(685, 555, 97, 38);
+		contentPane.add(exit_btn);
 
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
@@ -190,10 +209,8 @@ public class JavaGameClientView extends JFrame {
 
 			ListenNetwork net = new ListenNetwork();
 			net.start();
-			TextSendAction action = new TextSendAction();
+			ImageSendAction action = new ImageSendAction();
 			btnSend.addActionListener(action);
-			txtInput.addActionListener(action);
-			txtInput.requestFocus();
 			ImageSendAction action2 = new ImageSendAction();
 			imgBtn.addActionListener(action2);
 			MyMouseEvent mouse = new MyMouseEvent();
@@ -365,24 +382,6 @@ public class JavaGameClientView extends JFrame {
 			lblMouseEvent.setText(e.getButton() + " mouseReleased " + e.getX() + "," + e.getY());
 			// �뱶�옒洹몄쨷 硫덉텧�떆 蹂댁엫
 
-		}
-	}
-
-	// keyboard enter key 移섎㈃ �꽌踰꾨줈 �쟾�넚
-	class TextSendAction implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// Send button�쓣 �늻瑜닿굅�굹 硫붿떆吏� �엯�젰�븯怨� Enter key 移섎㈃
-			if (e.getSource() == btnSend || e.getSource() == txtInput) {
-				String msg = null;
-				// msg = String.format("[%s] %s\n", UserName, txtInput.getText());
-				msg = txtInput.getText();
-				SendMessage(msg);
-				txtInput.setText(""); // 硫붿꽭吏�瑜� 蹂대궡怨� �굹硫� 硫붿꽭吏� �벐�뒗李쎌쓣 鍮꾩슫�떎.
-				txtInput.requestFocus(); // 硫붿꽭吏�瑜� 蹂대궡怨� 而ㅼ꽌瑜� �떎�떆 �뀓�뒪�듃 �븘�뱶濡� �쐞移섏떆�궓�떎
-				if (msg.contains("/exit")) // 醫낅즺 泥섎━
-					System.exit(0);
-			}
 		}
 	}
 
