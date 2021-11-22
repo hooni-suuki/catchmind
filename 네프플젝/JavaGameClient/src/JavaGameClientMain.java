@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -129,26 +130,28 @@ public class JavaGameClientMain extends JFrame {
 	{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		//	List<User> userlist =userDao.selectAll(); 
-			user= userDao.selectByID(1);
 			String username = txtUserName.getText().trim();
 			String password = txtPassword.getText().trim();
 			String ip_addr = "127.0.0.1";
 			String port_no = "30000";
 			
+			User user = userDao.selectByID(username);
 			try {
-				if(!user.getName().equals(username)) {
-					JOptionPane.showMessageDialog(null, "계정이 틀렸어.");
+				if(!user.getId().equals(username)) {
+					JOptionPane.showMessageDialog(null, "계정이 틀렸습니다..");
+				}
+				else if(!user.getPassword().equals(password)){
+					JOptionPane.showMessageDialog(null, "비밀번호가 틀렸습니다.");
 				}
 				else {
-					JavaGameClientView view = new JavaGameClientView(username, ip_addr, port_no);
+					JOptionPane.showMessageDialog(null, "로그인~!~!~!");
+					JavaGameClientView view = new JavaGameClientView(username, password, ip_addr, port_no);
 					setVisible(false);
 				}
 			} catch (Exception e2) {
 				// TODO: handle exception
-				JOptionPane.showMessageDialog(null, "뭐가문제징");
+				JOptionPane.showMessageDialog(null, "아이디가 없습니다.");
 			}
-		
 			
 		}
 	}

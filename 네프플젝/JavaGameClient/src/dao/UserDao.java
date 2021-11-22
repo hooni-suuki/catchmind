@@ -25,7 +25,7 @@ public class UserDao {
 		return list;
 	}
 	
-	public User selectByID(int id) {
+	public User selectByID(String id) {
 		User user = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		try {

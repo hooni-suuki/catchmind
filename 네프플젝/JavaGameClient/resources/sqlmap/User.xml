@@ -16,8 +16,8 @@
         SELECT * FROM User
     </select>
  
-    <select id="selectById" parameterType="int" resultMap="result">
-        SELECT name FROM User WHERE id = #{id}
+    <select id="selectById" parameterType="String" resultMap="result">
+        SELECT id, name, password FROM User WHERE id = #{id}
     </select>
  
 </mapper>

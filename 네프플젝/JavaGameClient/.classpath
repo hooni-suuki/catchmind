@@ -7,12 +7,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/jh710/Downloads/mysql-connector-java-8.0.27.jar">
+	<classpathentry kind="lib" path="C:/Users/82102/Desktop/net/catchmind/네프플젝/JavaGameClient/lib/mybatis-3.5.7.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/jh710/Downloads/mybatis-3.5.7.jar">
+	<classpathentry kind="lib" path="C:/Users/82102/Desktop/net/catchmind/네프플젝/JavaGameClient/lib/mysql-connector-java-8.0.27.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

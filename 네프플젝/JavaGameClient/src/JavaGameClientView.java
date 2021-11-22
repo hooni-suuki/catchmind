@@ -18,6 +18,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -42,11 +44,16 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+ 
 
 public class JavaGameClientView extends JFrame {
 	/**
 	 * 
 	 */
+	
+	private ArrayList<String> UserList = new ArrayList<String>();  
+	private int userCnt;
+
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private String UserName;
@@ -57,7 +64,6 @@ public class JavaGameClientView extends JFrame {
 	private OutputStream os;
 	private DataInputStream dis;
 	private DataOutputStream dos;
-
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 	// private JTextArea textArea;
@@ -80,7 +86,8 @@ public class JavaGameClientView extends JFrame {
 	 * Create the frame.
 	 * @throws BadLocationException 
 	 */
-	public JavaGameClientView(String username,  String ip_addr, String port_no)  {
+	public JavaGameClientView(String username, String password, String ip_addr, String port_no)  {
+		
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,7 +128,7 @@ public class JavaGameClientView extends JFrame {
 		imgBtn.setBounds(176, 555, 50, 40);
 		contentPane.add(imgBtn);
 
-		JButton btnNewButton = new JButton("醫� 猷�");
+		JButton btnNewButton = new JButton("EXIT");
 		btnNewButton.setFont(new Font("援대┝", Font.PLAIN, 14));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -130,7 +137,7 @@ public class JavaGameClientView extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnNewButton.setBounds(549, 488, 69, 40);
+		btnNewButton.setBounds(703, 555, 69, 40);
 		contentPane.add(btnNewButton);
 
 		panel = new JPanel();
@@ -140,7 +147,6 @@ public class JavaGameClientView extends JFrame {
 		contentPane.add(panel);
 		gc = panel.getGraphics();
 		
-		// Image �쁺�뿭 蹂닿��슜. paint() �뿉�꽌 �씠�슜�븳�떎.
 		panelImage = createImage(panel.getWidth(), panel.getHeight());
 		gc2 = panelImage.getGraphics();
 		gc2.setColor(panel.getBackground());
@@ -156,19 +162,25 @@ public class JavaGameClientView extends JFrame {
 		lblMouseEvent.setBounds(176, 438, 442, 40);
 		contentPane.add(lblMouseEvent);
 		
-		JLabel user_label_01 = new JLabel("user_name_01");
+		UserList.add(username);
+		if(UserList.add(username)) {
+			userCnt++;
+		}
+
+		JLabel user_label_01 = new JLabel("Name");
 		user_label_01.setBounds(22, 171, 135, 15);
 		contentPane.add(user_label_01);
+		user_label_01.setText(UserList.get(userCnt));
 		
-		JLabel user_label_02 = new JLabel("user_name_02");
+		JLabel user_label_02 = new JLabel();
 		user_label_02.setBounds(22, 373, 135, 15);
 		contentPane.add(user_label_02);
 		
-		JLabel user_label_03 = new JLabel("user_name_03");
+		JLabel user_label_03 = new JLabel();
 		user_label_03.setBounds(638, 171, 135, 15);
 		contentPane.add(user_label_03);
 		
-		JLabel user_label_04 = new JLabel("user_name_04");
+		JLabel user_label_04 = new JLabel();
 		user_label_04.setBounds(638, 373, 135, 15);
 		contentPane.add(user_label_04);
 		
@@ -187,10 +199,6 @@ public class JavaGameClientView extends JFrame {
 		JPanel user_panel_04 = new JPanel();
 		user_panel_04.setBounds(638, 238, 135, 125);
 		contentPane.add(user_panel_04);
-		
-		JButton exit_btn = new JButton("EXIT");
-		exit_btn.setBounds(685, 555, 97, 38);
-		contentPane.add(exit_btn);
 
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
