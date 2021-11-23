@@ -30,6 +30,7 @@ import javax.swing.JTextPane;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -93,6 +94,9 @@ public class JavaGameClientView extends JFrame {
 	private JRadioButton blueButton;
 	private JRadioButton yellowButton;
 	
+	private JRadioButton LineButton;
+	private JRadioButton RectangleButton;
+	private JRadioButton CircleButton;
 	JPanel panel;
 	private JLabel lblMouseEvent;
 	private Graphics gc;
@@ -131,7 +135,7 @@ public class JavaGameClientView extends JFrame {
 		//-------------------------------------------------
 		//채팅창 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(242, 455, 303, 107);
+		scrollPane.setBounds(242, 467, 303, 95);
 		contentPane.add(scrollPane);
 		
 		textArea = new JTextPane();
@@ -140,7 +144,12 @@ public class JavaGameClientView extends JFrame {
 		textArea.setFont(new Font("援대┝泥�", Font.PLAIN, 14));
 		
 		//-------------------------------------------------	
-
+		
+		txtInput = new JTextField();
+		txtInput.setBounds(244, 566, 301, 21);
+		contentPane.add(txtInput);
+		txtInput.setColumns(10);
+		
 		btnSend = new JButton("Send");
 		btnSend.setFont(new Font("援대┝", Font.PLAIN, 14));
 		btnSend.setBounds(549, 555, 69, 40);
@@ -154,22 +163,22 @@ public class JavaGameClientView extends JFrame {
 		imgBtn.setBounds(176, 555, 50, 40);
 		contentPane.add(imgBtn);
 
-		JButton btnNewButton = new JButton("EXIT");
-		btnNewButton.setFont(new Font("援대┝", Font.PLAIN, 14));
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton EXITBtn = new JButton("EXIT");
+		EXITBtn.setFont(new Font("援대┝", Font.PLAIN, 14));
+		EXITBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ChatMsg msg = new ChatMsg(UserName, "400", "Bye");
 				SendObject(msg);
 				System.exit(0);
 			}
 		});
-		btnNewButton.setBounds(703, 555, 69, 40);
-		contentPane.add(btnNewButton);
+		EXITBtn.setBounds(703, 555, 69, 40);
+		contentPane.add(EXITBtn);
 
 		panel = new JPanel();
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(176, 32, 442, 381);
+		panel.setBounds(176, 32, 442, 342);
 		contentPane.add(panel);
 		gc = panel.getGraphics();
 		
@@ -224,7 +233,7 @@ public class JavaGameClientView extends JFrame {
 	//-------------------------------------------------	
 		
 		toolBox = new JPanel();
-		toolBox.setBounds(176, 419, 442, 40);
+		toolBox.setBounds(176, 393, 442, 53);
 		contentPane.add(toolBox);
 		toolBox.setLayout(null);
 		JButton [] setbtn = new JButton[4];
@@ -234,7 +243,7 @@ public class JavaGameClientView extends JFrame {
 		toolBox.add(redButton);
 
 		greenButton = new JRadioButton("green");
-		greenButton.setBounds(203, 6, 61, 23);
+		greenButton.setBounds(8, 31, 61, 23);
 		toolBox.add(greenButton);
 		
 		blueButton = new JRadioButton("blue");
@@ -242,7 +251,7 @@ public class JavaGameClientView extends JFrame {
 		toolBox.add(blueButton);
 		
 		yellowButton = new JRadioButton("yellow");
-		yellowButton.setBounds(136, 6, 61, 23);
+		yellowButton.setBounds(73, 31, 74, 23);
 		toolBox.add(yellowButton);
 		
 		ButtonGroup  group = new ButtonGroup();
@@ -250,13 +259,23 @@ public class JavaGameClientView extends JFrame {
 		group.add(redButton);
 		group.add(greenButton);
 		group.add(yellowButton);
-		//-------------------------------------------------	
-
 		
-				txtInput = new JTextField();
-				txtInput.setBounds(244, 566, 301, 21);
-				contentPane.add(txtInput);
-				txtInput.setColumns(10);
+		LineButton = new JRadioButton("Line");
+		LineButton.setBounds(205, 6, 61, 23);
+		toolBox.add(LineButton);
+		
+		RectangleButton = new JRadioButton("Rectangle");
+		RectangleButton.setBounds(205, 31, 81, 23);
+		toolBox.add(RectangleButton);
+		
+		CircleButton = new JRadioButton("Circle");
+		CircleButton.setBounds(286, 6, 74, 23);
+		toolBox.add(CircleButton);
+		ButtonGroup shapegroup = new ButtonGroup();
+		shapegroup.add(LineButton);
+		shapegroup.add(RectangleButton);
+		shapegroup.add(CircleButton);
+		//-------------------------------------------------	
 
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
