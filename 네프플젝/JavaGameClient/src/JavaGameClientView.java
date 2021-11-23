@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -43,6 +44,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import javax.swing.JRadioButton;
 
  
 
@@ -52,14 +54,18 @@ public class JavaGameClientView extends JFrame {
 	 */
 	
 	private ArrayList<String> UserList = new ArrayList<String>();  
-	private int userCnt;
 
 	private static final long serialVersionUID = 1L;
+	
+
+	
+	private JTextField txtInput;
+
 	private JPanel contentPane;
 	private String UserName;
 	private JButton btnSend;
-	private static final int BUF_LEN = 128; // Windows 泥섎읆 BUF_LEN �쓣 �젙�쓽
-	private Socket socket; // �뿰寃곗냼耳�
+	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
+	private Socket socket; // 연결소켓
 	private InputStream is;
 	private OutputStream os;
 	private DataInputStream dis;
@@ -68,19 +74,35 @@ public class JavaGameClientView extends JFrame {
 	private ObjectOutputStream oos;
 	// private JTextArea textArea;
 	private JTextPane textArea;
+	private JButton draw, newDraw;  //"그리기"버튼과 "모두 지우기"버튼
 
 	private Frame frame;
 	private FileDialog fd;
 	private JButton imgBtn;
+	
+	//유저 이름 
+	private JLabel user_label_01;
+	private JLabel user_label_02;
+	private JLabel user_label_03;
+	private JLabel user_label_04;
 
+	//그리기관련 툴박스
+	private JPanel toolBox;
+	private JRadioButton redButton;
+	private JRadioButton greenButton;
+	private JRadioButton blueButton;
+	private JRadioButton yellowButton;
+	
 	JPanel panel;
 	private JLabel lblMouseEvent;
 	private Graphics gc;
 	private int pen_size = 2; // minimum 2
-	// 洹몃젮吏� Image瑜� 蹂닿��븯�뒗 �슜�룄, paint() �븿�닔�뿉�꽌 �씠�슜�븳�떎.
+	// 그려진 Image를 보관하는 용도, paint() 함수에서 이용한다.
 	private Image panelImage = null; 
 	private Graphics gc2 = null;
 	private Audio backAudio;
+	
+
 
 	/**
 	 * Create the frame.
@@ -92,6 +114,8 @@ public class JavaGameClientView extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 634);
+		//-------------------------------------------------	
+		//메인 패널 배경이미지 들어있음
 		JPanel contentPane = new JPanel() {
 			public void paint(Graphics g) {
 				Image MainScreen = new ImageIcon("src/image/mainimg.jpeg").getImage();
@@ -104,15 +128,18 @@ public class JavaGameClientView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		//-------------------------------------------------
+		//채팅창 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(238, 488, 303, 107);
+		scrollPane.setBounds(242, 455, 303, 107);
 		contentPane.add(scrollPane);
 		
-				textArea = new JTextPane();
-				scrollPane.setViewportView(textArea);
-				textArea.setEditable(true);
-				textArea.setFont(new Font("援대┝泥�", Font.PLAIN, 14));
+		textArea = new JTextPane();
+		scrollPane.setViewportView(textArea);
+		textArea.setEditable(true);
+		textArea.setFont(new Font("援대┝泥�", Font.PLAIN, 14));
+		
+		//-------------------------------------------------	
 
 		btnSend = new JButton("Send");
 		btnSend.setFont(new Font("援대┝", Font.PLAIN, 14));
@@ -122,7 +149,6 @@ public class JavaGameClientView extends JFrame {
 
 		AppendText("User " + username + " connecting " + ip_addr + " " + port_no);
 		UserName = username;
-
 		imgBtn = new JButton("+");
 		imgBtn.setFont(new Font("援대┝", Font.PLAIN, 16));
 		imgBtn.setBounds(176, 555, 50, 40);
@@ -159,31 +185,27 @@ public class JavaGameClientView extends JFrame {
 		lblMouseEvent.setFont(new Font("援대┝", Font.BOLD, 14));
 		lblMouseEvent.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblMouseEvent.setBackground(Color.WHITE);
-		lblMouseEvent.setBounds(176, 438, 442, 40);
+		lblMouseEvent.setBounds(176, 505, 34, 40);
 		contentPane.add(lblMouseEvent);
 		
-		UserList.add(username);
-		if(UserList.add(username)) {
-			userCnt++;
-		}
-
-		JLabel user_label_01 = new JLabel("Name");
+		//-------------------------------------------------	
+		user_label_01 = new JLabel();
 		user_label_01.setBounds(22, 171, 135, 15);
 		contentPane.add(user_label_01);
-		user_label_01.setText(UserList.get(userCnt));
-		
-		JLabel user_label_02 = new JLabel();
+		user_label_01.setText(username);
+
+		user_label_02 = new JLabel();
 		user_label_02.setBounds(22, 373, 135, 15);
 		contentPane.add(user_label_02);
-		
-		JLabel user_label_03 = new JLabel();
+		user_label_02.setText(username);
+
+		user_label_03 = new JLabel();
 		user_label_03.setBounds(638, 171, 135, 15);
 		contentPane.add(user_label_03);
 		
-		JLabel user_label_04 = new JLabel();
+		user_label_04 = new JLabel();
 		user_label_04.setBounds(638, 373, 135, 15);
 		contentPane.add(user_label_04);
-		
 		JPanel user_panel_01 = new JPanel();
 		user_panel_01.setBounds(22, 32, 135, 125);
 		contentPane.add(user_panel_01);
@@ -199,6 +221,42 @@ public class JavaGameClientView extends JFrame {
 		JPanel user_panel_04 = new JPanel();
 		user_panel_04.setBounds(638, 238, 135, 125);
 		contentPane.add(user_panel_04);
+	//-------------------------------------------------	
+		
+		toolBox = new JPanel();
+		toolBox.setBounds(176, 419, 442, 40);
+		contentPane.add(toolBox);
+		toolBox.setLayout(null);
+		JButton [] setbtn = new JButton[4];
+		setbtn[0] = new JButton("지우기");
+		redButton = new JRadioButton("red");
+		redButton.setBounds(8, 6, 61, 23);
+		toolBox.add(redButton);
+
+		greenButton = new JRadioButton("green");
+		greenButton.setBounds(203, 6, 61, 23);
+		toolBox.add(greenButton);
+		
+		blueButton = new JRadioButton("blue");
+		blueButton.setBounds(73, 6, 61, 23);
+		toolBox.add(blueButton);
+		
+		yellowButton = new JRadioButton("yellow");
+		yellowButton.setBounds(136, 6, 61, 23);
+		toolBox.add(yellowButton);
+		
+		ButtonGroup  group = new ButtonGroup();
+		group.add(blueButton);
+		group.add(redButton);
+		group.add(greenButton);
+		group.add(yellowButton);
+		//-------------------------------------------------	
+
+		
+				txtInput = new JTextField();
+				txtInput.setBounds(244, 566, 301, 21);
+				contentPane.add(txtInput);
+				txtInput.setColumns(10);
 
 		try {
 			socket = new Socket(ip_addr, Integer.parseInt(port_no));
@@ -217,8 +275,10 @@ public class JavaGameClientView extends JFrame {
 
 			ListenNetwork net = new ListenNetwork();
 			net.start();
-			ImageSendAction action = new ImageSendAction();
+			TextSendAction action = new TextSendAction();
 			btnSend.addActionListener(action);
+			txtInput.addActionListener(action);
+			txtInput.requestFocus();
 			ImageSendAction action2 = new ImageSendAction();
 			imgBtn.addActionListener(action2);
 			MyMouseEvent mouse = new MyMouseEvent();
@@ -226,8 +286,7 @@ public class JavaGameClientView extends JFrame {
 			panel.addMouseListener(mouse);
 			MyMouseWheelEvent wheel = new MyMouseWheelEvent();
 			panel.addMouseWheelListener(wheel);
-
-
+			
 		} catch (NumberFormatException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -304,11 +363,7 @@ public class JavaGameClientView extends JFrame {
 
 	// Mouse Event �닔�떊 泥섎━
 	public void DoMouseEvent(ChatMsg cm) {
-		Color c;
-		if (cm.UserName.matches(UserName)) // 蹂몄씤 寃껋� �씠誘� Local 濡� 洹몃졇�떎.
-			return;
-		c = new Color(255, 0, 0); // �떎瑜� �궗�엺 寃껋� Red
-		gc2.setColor(c);
+		
 		gc2.fillOval(cm.mouse_e.getX() - pen_size/2, cm.mouse_e.getY() - cm.pen_size/2, cm.pen_size, cm.pen_size);
 		gc.drawImage(panelImage, 0, 0, panel);
 	}
@@ -342,8 +397,20 @@ public class JavaGameClientView extends JFrame {
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			lblMouseEvent.setText(e.getButton() + " mouseDragged " + e.getX() + "," + e.getY());// 醫뚰몴異쒕젰媛��뒫
-			Color c = new Color(0,0,255);
-			gc2.setColor(c);
+			gc2.setColor(Color.black);
+			
+			if(redButton.isSelected()) {
+				gc2.setColor(Color.red);
+				
+			}else if(yellowButton.isSelected()) {
+				gc2.setColor(Color.yellow);
+			}
+			else if(blueButton.isSelected()) {
+				gc2.setColor(Color.blue);
+			}else if(greenButton.isSelected()) {
+				gc2.setColor(Color.green);
+			}
+				
 			gc2.fillOval(e.getX()-pen_size/2, e.getY()-pen_size/2, pen_size, pen_size);
 			// panelImnage�뒗 paint()�뿉�꽌 �씠�슜�븳�떎.
 			gc.drawImage(panelImage, 0, 0, panel);
@@ -392,14 +459,32 @@ public class JavaGameClientView extends JFrame {
 
 		}
 	}
+	
+	// keyboard enter key 치면 서버로 전송
+	class TextSendAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// Send button을 누르거나 메시지 입력하고 Enter key 치면
+			if (e.getSource() == btnSend || e.getSource() == txtInput) {
+				String msg = null;
+				// msg = String.format("[%s] %s\n", UserName, txtInput.getText());
+				msg = txtInput.getText();
+				SendMessage(msg);
+				txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
+				txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다
+				if (msg.contains("/exit")) // 종료 처리
+					System.exit(0);
+			}
+		}
+	}
 
 	class ImageSendAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// �븸�뀡 �씠踰ㅽ듃媛� sendBtn�씪�븣 �삉�뒗 textField �뿉�꽭 Enter key 移섎㈃
+			// 액션 이벤트가 sendBtn일때 또는 textField 에세 Enter key 치면
 			if (e.getSource() == imgBtn) {
-				frame = new Frame("�씠誘몄�泥⑤�");
-				fd = new FileDialog(frame, "�씠誘몄� �꽑�깮", FileDialog.LOAD);
+				frame = new Frame("이미지첨부");
+				fd = new FileDialog(frame, "이미지 선택", FileDialog.LOAD);
 				// frame.setVisible(true);
 				// fd.setDirectory(".\\");
 				fd.setVisible(true);
@@ -414,20 +499,20 @@ public class JavaGameClientView extends JFrame {
 		}
 	}
 
-	ImageIcon icon1 = new ImageIcon("src/icon1.jpg");
+
 
 	public void AppendIcon(ImageIcon icon) {
 		int len = textArea.getDocument().getLength();
-		// �걹�쑝濡� �씠�룞
+		// 끝으로 이동
 		textArea.setCaretPosition(len);
 		textArea.insertIcon(icon);
 	}
 
-	// �솕硫댁뿉 異쒕젰
+	// 화면에 출력
 	public void AppendText(String msg) {
 		// textArea.append(msg + "\n");
 		// AppendIcon(icon1);
-		msg = msg.trim(); // �븵�뮘 blank�� \n�쓣 �젣嫄고븳�떎.
+		msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
 		//textArea.setCaretPosition(len);
 		//textArea.replaceSelection(msg + "\n");
 		
@@ -446,11 +531,11 @@ public class JavaGameClientView extends JFrame {
 		textArea.setCaretPosition(len);
 		//textArea.replaceSelection("\n");
 
-
 	}
-	// �솕硫� �슦痢≪뿉 異쒕젰
+	
+	// 화면 우측에 출력
 	public void AppendTextR(String msg) {
-		msg = msg.trim(); // �븵�뮘 blank�� \n�쓣 �젣嫄고븳�떎.	
+		msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.	
 		StyledDocument doc = textArea.getStyledDocument();
 		SimpleAttributeSet right = new SimpleAttributeSet();
 		StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
@@ -478,13 +563,13 @@ public class JavaGameClientView extends JFrame {
 		double ratio;
 		width = ori_icon.getIconWidth();
 		height = ori_icon.getIconHeight();
-		// Image媛� �꼫臾� �겕硫� 理쒕� 媛�濡� �삉�뒗 �꽭濡� 200 湲곗��쑝濡� 異뺤냼�떆�궓�떎.
+		// Image가 너무 크면 최대 가로 또는 세로 200 기준으로 축소시킨다.
 		if (width > 200 || height > 200) {
-			if (width > height) { // 媛�濡� �궗吏�
+			if (width > height) { // 가로 사진
 				ratio = (double) height / width;
 				width = 200;
 				height = (int) (width * ratio);
-			} else { // �꽭濡� �궗吏�
+			} else { // 세로 사진
 				ratio = (double) width / height;
 				height = 200;
 				width = (int) (height * ratio);
@@ -500,14 +585,14 @@ public class JavaGameClientView extends JFrame {
 		textArea.setCaretPosition(len);
 		textArea.replaceSelection("\n");
 		// ImageViewAction viewaction = new ImageViewAction();
-		// new_icon.addActionListener(viewaction); // �궡遺��겢�옒�뒪濡� �븸�뀡 由ъ뒪�꼫瑜� �긽�냽諛쏆� �겢�옒�뒪濡�
+		// new_icon.addActionListener(viewaction); // 내부클래스로 액션 리스너를 상속받은 클래스로
 		// panelImage = ori_img.getScaledInstance(panel.getWidth(), panel.getHeight(), Image.SCALE_DEFAULT);
 
 		gc2.drawImage(ori_img,  0,  0, panel.getWidth(), panel.getHeight(), panel);
 		gc.drawImage(panelImage, 0, 0, panel.getWidth(), panel.getHeight(), panel);
 	}
 
-	// Windows 泥섎읆 message �젣�쇅�븳 �굹癒몄� 遺�遺꾩� NULL 濡� 留뚮뱾湲� �쐞�븳 �븿�닔
+	// Windows 처럼 message 제외한 나머지 부분은 NULL 로 만들기 위한 함수
 	public byte[] MakePacket(String msg) {
 		byte[] packet = new byte[BUF_LEN];
 		byte[] bb = null;
@@ -526,7 +611,7 @@ public class JavaGameClientView extends JFrame {
 		return packet;
 	}
 
-	// Server�뿉寃� network�쑝濡� �쟾�넚
+	// Server에게 network으로 전송
 	public void SendMessage(String msg) {
 		try {
 			// dos.writeUTF(msg);
@@ -552,11 +637,11 @@ public class JavaGameClientView extends JFrame {
 		}
 	}
 
-	public void SendObject(Object ob) { // �꽌踰꾨줈 硫붿꽭吏�瑜� 蹂대궡�뒗 硫붿냼�뱶
+	public void SendObject(Object ob) { // 서버로 메세지를 보내는 메소드
 		try {
 			oos.writeObject(ob);
 		} catch (IOException e) {
-			// textArea.append("硫붿꽭吏� �넚�떊 �뿉�윭!!\n");
+			// textArea.append("메세지 송신 에러!!\n");
 			AppendText("SendObject Error");
 		}
 	}
