@@ -3,6 +3,7 @@
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
+import java.awt.Color;
 
 class ChatMsg implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -12,10 +13,19 @@ class ChatMsg implements Serializable {
 	public ImageIcon img;
 	public MouseEvent mouse_e;
 	public int pen_size; // pen size
-
+	Color color;
+	
 	public ChatMsg(String UserName, String code, String msg) {
 		this.code = code;
 		this.UserName = UserName;
 		this.data = msg;
 	}
+
+	public ChatMsg(String UserName, String code, String msg, Color color) {
+		this.code = code;
+		this.UserName = UserName;
+		this.data = msg;
+		this.color =color;
+	}
+	public Color getColor() {		return color;	}
 }
