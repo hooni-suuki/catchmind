@@ -408,7 +408,10 @@ public class JavaGameServer extends JFrame {
 					} else if (cm.code.matches("400")) { // logout message 처리
 						Logout();
 						break;
-					} else { // 300, 500, ... 기타 object는 모두 방송한다.
+					}else if(cm.code.matches("700")){
+						WriteAllObject(cm);
+					}
+					else { // 300, 500, ... 기타 object는 모두 방송한다.
 						WriteAllObject(cm);
 					} 
 				} catch (IOException e) {

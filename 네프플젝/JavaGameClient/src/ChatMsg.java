@@ -3,6 +3,8 @@
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
+import javax.swing.plaf.basic.BasicOptionPaneUI.ButtonActionListener;
+
 import java.awt.Color;
 
 class ChatMsg implements Serializable {
@@ -13,6 +15,8 @@ class ChatMsg implements Serializable {
 	public ImageIcon img;
 	public MouseEvent mouse_e;
 	public int pen_size; // pen size
+	public ButtonActionListener btn;
+	
 	Color color;
 	
 	public ChatMsg(String UserName, String code, String msg) {
