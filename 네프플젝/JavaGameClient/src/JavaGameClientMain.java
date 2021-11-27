@@ -48,7 +48,7 @@ public class JavaGameClientMain extends JFrame {
 		
 		JPanel contentPane = new JPanel() {
 			public void paint(Graphics g) {
-				Image MainScreen = new ImageIcon("src/image/mainimg.jpeg").getImage();
+				Image MainScreen = new ImageIcon("src/image/mainimg.jpg").getImage();
 				Dimension d = getSize();
 				g.drawImage(MainScreen, 0, 0,d.width,d.height, null);
 				setOpaque(false);
