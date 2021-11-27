@@ -145,7 +145,9 @@ public class JavaGameClientMain extends JFrame {
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "로그인~!~!~!");
-					JavaGameClientView view = new JavaGameClientView(username, password, ip_addr, port_no);
+					//JavaGameClientView view = new JavaGameClientView(username, password, ip_addr, port_no);
+					ClientViewInit init = new ClientViewInit();
+					init.makeClientView();
 					setVisible(false);
 				}
 			} catch (Exception e2) {

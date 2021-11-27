@@ -322,7 +322,7 @@ public class JavaGameClientView extends JFrame {
 
    }
 
-   public void paint(Graphics g) {
+public void paint(Graphics g) {
       super.paint(g);
       // Image 영역이 가려졌다 다시 나타날 때 그려준다.
       gc.drawImage(panelImage, 0, 0, this);
@@ -701,4 +701,6 @@ public class JavaGameClientView extends JFrame {
          AppendText("SendObject Error");
       }
    }
+
+
 }
