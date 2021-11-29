@@ -3,6 +3,9 @@
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
+import javax.swing.text.AttributeSet.ColorAttribute;
+import java.awt.Color;
+
 
 class ChatMsg implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -12,6 +15,7 @@ class ChatMsg implements Serializable {
 	public ImageIcon img;
 	public MouseEvent mouse_e;
 	public int pen_size; // pen size
+	Color color;
 
 	public ChatMsg(String UserName, String code, String msg) {
 		this.code = code;

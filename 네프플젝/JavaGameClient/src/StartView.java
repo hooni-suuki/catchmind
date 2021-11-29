@@ -63,7 +63,7 @@ public class StartView extends JFrame {
 		
 		try {
 			backAudio = new Audio("src/Audio/InitBGM.wav", true); //배경음악넣었움
-			backAudio.start();
+//			backAudio.start();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "재생이 안돼..?");
 			System.exit(0);

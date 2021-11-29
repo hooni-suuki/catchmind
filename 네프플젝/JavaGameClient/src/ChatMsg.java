@@ -25,11 +25,11 @@ class ChatMsg implements Serializable {
 		this.data = msg;
 	}
 
-	public ChatMsg(String UserName, String code, String msg, Color color) {
-		this.code = code;
-		this.UserName = UserName;
-		this.data = msg;
-		this.color =color;
-	}
+//	public ChatMsg(String UserName, String code, String msg, Color color) {
+//		this.code = code;
+//		this.UserName = UserName;
+//		this.data = msg;
+//		this.color =color;
+//	}
 	public Color getColor() {		return color;	}
 }
