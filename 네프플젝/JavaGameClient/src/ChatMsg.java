@@ -15,9 +15,8 @@ class ChatMsg implements Serializable {
 	public ImageIcon img;
 	public MouseEvent mouse_e;
 	public int pen_size; // pen size
-	public ButtonActionListener btn;
 	
-	Color color;
+	public String color;
 	
 	public ChatMsg(String UserName, String code, String msg) {
 		this.code = code;
@@ -25,11 +24,4 @@ class ChatMsg implements Serializable {
 		this.data = msg;
 	}
 
-//	public ChatMsg(String UserName, String code, String msg, Color color) {
-//		this.code = code;
-//		this.UserName = UserName;
-//		this.data = msg;
-//		this.color =color;
-//	}
-	public Color getColor() {		return color;	}
 }

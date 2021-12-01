@@ -30,7 +30,7 @@ public class StartView extends JFrame {
 	static StartView frame = new StartView();
 	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.png");
 	private ImageIcon TitleImg = new ImageIcon("src/image/lbimg.png");
-	
+
     Image img = TitleImg.getImage();
 	Image updateImg = img.getScaledInstance(500, 263, Image.SCALE_SMOOTH);
 	ImageIcon updateIcon = new ImageIcon(updateImg);

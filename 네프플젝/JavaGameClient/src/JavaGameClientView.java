@@ -28,6 +28,10 @@ import javax.swing.text.StyledDocument;
 
 import com.mysql.cj.TransactionEventHandler;
 
+import dao.UserDao;
+import model.User;
+import mybatis.Mybatis_User;
+
 import java.awt.*;
 
 public class JavaGameClientView extends JFrame {
@@ -36,6 +40,7 @@ public class JavaGameClientView extends JFrame {
 	 */
 
 	private static final long serialVersionUID = 1L;
+	UserDao userDao = new UserDao(Mybatis_User.getSqlSessionFactory());
 
 	private JTextField txtInput;
 
@@ -63,22 +68,6 @@ public class JavaGameClientView extends JFrame {
 	private JLabel user_label_03;
 	private JLabel user_label_04;
 
-	public int getX1() {
-		return ox;
-	};
-
-	public int getX2() {
-		return nx;
-	};
-
-	public int getY1() {
-		return oy;
-	};
-
-	public int getY2() {
-		return ny;
-	};
-
 	public JButton bluebtn, redbtn, yellowbtn, blackbtn, pinkbtn, eraserbtn, clearbtn;
 
 	// 그리기관련 툴박스
@@ -88,7 +77,7 @@ public class JavaGameClientView extends JFrame {
 	private JLabel lblMouseEvent;
 	private Graphics gc;
 	private int pen_size = 2; // minimum 2
-	private Color color;
+	private String color;
 	// 그려진 Image를 보관하는 용도, paint() 함수에서 이용한다.
 	private Image panelImage = null;
 	private Graphics gc2 = null;
@@ -127,7 +116,6 @@ public class JavaGameClientView extends JFrame {
 		textArea = new JTextPane();
 		scrollPane.setViewportView(textArea);
 		textArea.setEditable(true);
-		textArea.setFont(new Font("援대┝泥�", Font.PLAIN, 14));
 
 		// -------------------------------------------------
 
@@ -175,7 +163,6 @@ public class JavaGameClientView extends JFrame {
 
 		lblMouseEvent = new JLabel("<dynamic>");
 		lblMouseEvent.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMouseEvent.setFont(new Font("援대┝", Font.BOLD, 14));
 		lblMouseEvent.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblMouseEvent.setBackground(Color.WHITE);
 		lblMouseEvent.setBounds(22, 505, 208, 40);
@@ -201,11 +188,34 @@ public class JavaGameClientView extends JFrame {
 		contentPane.add(user_label_04);
 		// --------------------------------------------------------------
 		// 유저패널
-		JPanel user_panel_01 = new JPanel();
+		User user = userDao.selectByUserIMG(username);
+		
+		JPanel user_panel_01 = new JPanel() {
+			public void paint(Graphics g) {
+				if(user.getId().equals("a")) {
+					Image user1 = new ImageIcon(user.getuserimg()).getImage();
+					Dimension d = getSize();
+					g.drawImage(user1, 0, 0, d.width, d.height, null);
+					setOpaque(false);
+					super.paint(g);
+				}
+			}
+		};
 		user_panel_01.setBounds(22, 32, 135, 125);
 		contentPane.add(user_panel_01);
 
-		JPanel user_panel_03 = new JPanel();
+		
+		JPanel user_panel_03 = new JPanel(){
+			public void paint(Graphics g) {
+				if(user.getId().equals("b")) {
+					Image user2 = new ImageIcon(user.getuserimg()).getImage();
+					Dimension d = getSize();
+					g.drawImage(user2, 0, 0, d.width, d.height, null);
+					setOpaque(false);
+					super.paint(g);
+				}
+			}
+		};
 		user_panel_03.setBounds(638, 32, 135, 125);
 		contentPane.add(user_panel_03);
 
@@ -228,7 +238,8 @@ public class JavaGameClientView extends JFrame {
 		redbtn = new JButton("red");
 		redbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				getBtColor(e);
+				String str = e.getActionCommand();
+				changeColor(str);
 			}
 		});
 		redbtn.setBounds(12, 0, 50, 23);
@@ -239,7 +250,7 @@ public class JavaGameClientView extends JFrame {
 		bluebtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = e.getActionCommand();
-				getBtColor(e);
+				changeColor(str);
 			}
 		});
 		bluebtn.setBounds(63, 0, 50, 23);
@@ -250,7 +261,7 @@ public class JavaGameClientView extends JFrame {
 		yellowbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = e.getActionCommand();
-				getBtColor(e);
+				changeColor(str);
 			}
 		});
 		yellowbtn.setBounds(12, 33, 50, 23);
@@ -261,7 +272,7 @@ public class JavaGameClientView extends JFrame {
 		blackbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = e.getActionCommand();
-				getBtColor(e);
+				changeColor(str);
 			}
 		});
 		blackbtn.setBounds(63, 33, 50, 23);
@@ -272,7 +283,7 @@ public class JavaGameClientView extends JFrame {
 		pinkbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = e.getActionCommand();
-				getBtColor(e);
+				changeColor(str);
 			}
 		});
 		pinkbtn.setBackground(Color.pink);
@@ -283,7 +294,7 @@ public class JavaGameClientView extends JFrame {
 		eraserbtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String str = e.getActionCommand();
-				getBtColor(e);
+				changeColor(str);
 			}
 		});
 		eraserbtn.setBackground(Color.white);
@@ -396,7 +407,6 @@ public class JavaGameClientView extends JFrame {
 						DoMouseEvent(cm);
 						break;
 					case "600":
-						setColor(cm);
 						break;
 					case "700":
 						clear();
@@ -448,21 +458,25 @@ public class JavaGameClientView extends JFrame {
 		gc2.setColor(Color.blue);
 		gc2.drawRect(0, 0, panel.getWidth() - 1, panel.getHeight() - 1);
 	}
+	
+	public void changeColor(String str) {
+	if (str.equalsIgnoreCase("red"))
+		gc2.setColor(Color.red);
+	else if (str.equalsIgnoreCase("black"))
+		gc2.setColor(Color.black);
+	else if (str.equalsIgnoreCase("blue"))
+		gc2.setColor(Color.blue);
+	else if (str.equalsIgnoreCase("eraser"))
+		gc2.setColor(Color.white);
+	else if (str.equalsIgnoreCase("yellow"))
+		gc2.setColor(Color.yellow);
+	else if (str.equalsIgnoreCase("pink"))
+		gc2.setColor(Color.pink);
+	ChatMsg cm = new ChatMsg(UserName, "600", "Color");
+	cm.color = color;
+	SendObject(cm);
+}
 
-
-	public void getBtColor(ActionEvent e) {
-		Object obj = e.getSource();
-		JButton bt = (JButton) obj;
-		color = bt.getBackground();
-		gc2.setColor(color);
-		
-		ChatMsg cm = new ChatMsg(UserName, "600", "Color");
-		cm.color = color;
-		SendObject(cm);
-	}
-	public void setColor(ChatMsg cm) {
-		gc2.setColor(cm.color);
-	}
 	
 //=============================================== 
 	// Mouse Event 수신 처리

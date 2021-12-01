@@ -19,5 +19,9 @@
     <select id="selectById" parameterType="String" resultMap="result">
         SELECT id, name, password FROM User WHERE id = #{id}
     </select>
+    
+    <select id="selectByUserImg" parameterType="String" resultMap="result">
+        SELECT id, userimg FROM User WHERE id = #{id}
+    </select>
  
 </mapper>
