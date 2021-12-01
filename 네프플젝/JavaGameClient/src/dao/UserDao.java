@@ -35,4 +35,15 @@ public class UserDao {
 		} 
 		return user;
 	}
+	
+	public User selectByUserIMG(String userimg) {
+		User user = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			user= session.selectOne("User.selectByUserImg", userimg);
+		} finally {
+			session.close();
+		} 
+		return user;
+	}
 }

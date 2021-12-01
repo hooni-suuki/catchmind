@@ -29,12 +29,7 @@ public class StartView extends JFrame {
 	private JButton LoginBtn;
 	static StartView frame = new StartView();
 	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.png");
-	private ImageIcon TitleImg = new ImageIcon("src/image/lbimg.png");
-	
-    Image img = TitleImg.getImage();
-	Image updateImg = img.getScaledInstance(500, 263, Image.SCALE_SMOOTH);
-	ImageIcon updateIcon = new ImageIcon(updateImg);
-	
+
 	private Audio backAudio;
 	/**
 	 * Launch the application.
@@ -61,13 +56,11 @@ public class StartView extends JFrame {
 
 	public StartView() {
 		
-		try {
-			backAudio = new Audio("src/Audio/InitBGM.wav", true); //배경음악넣었움
-			backAudio.start();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "재생이 안돼..?");
-			System.exit(0);
-		}
+		/*
+		 * try { backAudio = new Audio("src/Audio/InitBGM.wav", true); //배경음악넣었움
+		 * backAudio.start(); } catch (Exception e) {
+		 * JOptionPane.showMessageDialog(null, "재생이 안돼..?"); System.exit(0); }
+		 */
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 891, 579);
@@ -93,11 +86,7 @@ public class StartView extends JFrame {
 		ViewPane.add(panel);
 		panel.setLayout(null);
 		
-		//타이틀
-		JLabel TitleLabel = new JLabel(updateIcon); 
-		TitleLabel.setBounds(145, 10, 396, 186);
-		panel.add(TitleLabel);
-		TitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
 		
 		//사실 의미없는 로그인버튼
 		LoginBtn = new JButton(StartBtn);

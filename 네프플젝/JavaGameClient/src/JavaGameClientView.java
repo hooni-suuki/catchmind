@@ -1,7 +1,6 @@
 
 // JavaObjClientView.java ObjecStram 湲곕컲 Client
 // 떎吏덉쟻 씤 梨꾪똿 李 
-import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -26,6 +25,12 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
+import com.mysql.cj.TransactionEventHandler;
+
+import dao.UserDao;
+import model.User;
+import mybatis.Mybatis_User;
 
 import java.awt.*;
 
@@ -53,7 +58,7 @@ public class JavaGameClientView extends JFrame {
    private Frame frame;
    private FileDialog fd;
    private JButton imgBtn;
-   Point first_point, last_point, old_point;
+//   Point first_point, last_point, old_point;
 
    private int ox, oy, nx, ny;
    // 유저 이름
@@ -62,6 +67,24 @@ public class JavaGameClientView extends JFrame {
    private JLabel user_label_03;
    private JLabel user_label_04;
 
+   public int getX1() {
+      return ox;
+   };
+
+   public int getX2() {
+      return nx;
+   };
+
+   public int getY1() {
+      return oy;
+   };
+
+   public int getY2() {
+      return ny;
+   };
+
+   public JButton bluebtn, redbtn, yellowbtn, blackbtn, pinkbtn, eraserbtn, clearbtn;
+
    // 그리기관련 툴박스
    private JPanel toolBox;
 
@@ -69,7 +92,7 @@ public class JavaGameClientView extends JFrame {
    private JLabel lblMouseEvent;
    private Graphics gc;
    private int pen_size = 2; // minimum 2
-   private Color c;
+   private Color color;
    // 그려진 Image를 보관하는 용도, paint() 함수에서 이용한다.
    private Image panelImage = null;
    private Graphics gc2 = null;
@@ -100,6 +123,93 @@ public class JavaGameClientView extends JFrame {
       setContentPane(contentPane);
       contentPane.setLayout(null);
       // -------------------------------------------------
+      
+      // userImg
+      UserDao userDao = new UserDao(Mybatis_User.getSqlSessionFactory());
+      User user = userDao.selectByUserIMG(username);
+		
+		/*
+		 * JPanel user_panel_01 = new JPanel() { public void paint(Graphics g) {
+		 * if(user.getId().equals("a")) { Image user1 = new
+		 * ImageIcon(user.getuserimg()).getImage(); Dimension d = getSize();
+		 * g.drawImage(user1, 0, 0, d.width, d.height, null); setOpaque(false);
+		 * super.paint(g); } } };
+		 * 
+		 * JPanel user_panel_02 = new JPanel() { public void paint(Graphics g) {
+		 * if(user.getId().equals("b")) { Image user1 = new
+		 * ImageIcon(user.getuserimg()).getImage(); Dimension d = getSize();
+		 * g.drawImage(user1, 0, 0, d.width, d.height, null); setOpaque(false);
+		 * super.paint(g); } } };
+		 * 
+		 * JPanel user_panel_03 = new JPanel() { public void paint(Graphics g) {
+		 * if(user.getId().equals("c")) { Image user1 = new
+		 * ImageIcon(user.getuserimg()).getImage(); Dimension d = getSize();
+		 * g.drawImage(user1, 0, 0, d.width, d.height, null); setOpaque(false);
+		 * super.paint(g); } } };
+		 * 
+		 * JPanel user_panel_04 = new JPanel() { public void paint(Graphics g) {
+		 * if(user.getId().equals("d")) { Image user1 = new
+		 * ImageIcon(user.getuserimg()).getImage(); Dimension d = getSize();
+		 * g.drawImage(user1, 0, 0, d.width, d.height, null); setOpaque(false);
+		 * super.paint(g); } } };
+		 */
+      
+		JPanel user_panel_01 = new JPanel() {
+			public void paint(Graphics g) {
+					Image user1 = new ImageIcon("src/image/egg.jpg").getImage();
+					Dimension d = getSize();
+					g.drawImage(user1, 0, 0, d.width, d.height, null);
+					setOpaque(false);
+					super.paint(g);
+			}
+		};
+		
+		JPanel user_panel_02 = new JPanel() {
+			public void paint(Graphics g) {
+					Image user1 = new ImageIcon("src/image/mushroom.jpg").getImage();
+					Dimension d = getSize();
+					g.drawImage(user1, 0, 0, d.width, d.height, null);
+					setOpaque(false);
+					super.paint(g);
+			}
+		};
+		
+		JPanel user_panel_03 = new JPanel() {
+			public void paint(Graphics g) {
+					Image user1 = new ImageIcon("src/image/pumpkin.jpg").getImage();
+					Dimension d = getSize();
+					g.drawImage(user1, 0, 0, d.width, d.height, null);
+					setOpaque(false);
+					super.paint(g);
+			}
+		};
+		
+		JPanel user_panel_04 = new JPanel() {
+			public void paint(Graphics g) {
+					Image user1 = new ImageIcon("src/image/rockrice.jpg").getImage();
+					Dimension d = getSize();
+					g.drawImage(user1, 0, 0, d.width, d.height, null);
+					setOpaque(false);
+					super.paint(g);
+			}
+		};
+		
+	      // 유저패널
+	      user_panel_01.setBounds(22, 32, 135, 125);
+	      contentPane.add(user_panel_01);
+
+	      user_panel_03.setBounds(638, 32, 135, 125);
+	      contentPane.add(user_panel_03);
+
+	      user_panel_02.setBounds(22, 238, 135, 125);
+	      contentPane.add(user_panel_02);
+
+	      user_panel_04.setBounds(638, 238, 135, 125);
+	      contentPane.add(user_panel_04);
+
+	      // -------------------------------------------------
+	  //-------------------------------------------------
+      
       // 채팅창
       JScrollPane scrollPane = new JScrollPane();
       scrollPane.setBounds(242, 467, 303, 95);
@@ -181,24 +291,7 @@ public class JavaGameClientView extends JFrame {
       user_label_04.setBounds(638, 373, 135, 15);
       contentPane.add(user_label_04);
       // --------------------------------------------------------------
-      // 유저패널
-      JPanel user_panel_01 = new JPanel();
-      user_panel_01.setBounds(22, 32, 135, 125);
-      contentPane.add(user_panel_01);
 
-      JPanel user_panel_03 = new JPanel();
-      user_panel_03.setBounds(638, 32, 135, 125);
-      contentPane.add(user_panel_03);
-
-      JPanel user_panel_02 = new JPanel();
-      user_panel_02.setBounds(22, 238, 135, 125);
-      contentPane.add(user_panel_02);
-
-      JPanel user_panel_04 = new JPanel();
-      user_panel_04.setBounds(638, 238, 135, 125);
-      contentPane.add(user_panel_04);
-
-      // -------------------------------------------------
       // 색 버튼, 모양 버튼 모임
       toolBox = new JPanel();
       toolBox.setBounds(176, 393, 442, 64);
@@ -206,73 +299,72 @@ public class JavaGameClientView extends JFrame {
       contentPane.add(toolBox);
       toolBox.setLayout(null);
 
-      JButton redbtn = new JButton("red");
+      redbtn = new JButton("red");
       redbtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            String str = e.getActionCommand();
-            changeColor(str);
+            getBtColor("red");
          }
       });
       redbtn.setBounds(12, 0, 50, 23);
       redbtn.setBackground(Color.red);
       toolBox.add(redbtn);
 
-      JButton bluebtn = new JButton("blue");
+      bluebtn = new JButton("blue");
       bluebtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             String str = e.getActionCommand();
-            changeColor(str);
+            getBtColor("blue");
          }
       });
       bluebtn.setBounds(63, 0, 50, 23);
       bluebtn.setBackground(Color.blue);
       toolBox.add(bluebtn);
 
-      JButton yellowbtn = new JButton("yellow");
+      yellowbtn = new JButton("yellow");
       yellowbtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             String str = e.getActionCommand();
-            changeColor(str);
+            getBtColor("yellow");
          }
       });
       yellowbtn.setBounds(12, 33, 50, 23);
       yellowbtn.setBackground(Color.yellow);
       toolBox.add(yellowbtn);
 
-      JButton blackbtn = new JButton("black");
+      blackbtn = new JButton("black");
       blackbtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             String str = e.getActionCommand();
-            changeColor(str);
+            getBtColor("black");
          }
       });
       blackbtn.setBounds(63, 33, 50, 23);
       blackbtn.setBackground(Color.black);
       toolBox.add(blackbtn);
 
-      JButton pinkbtn = new JButton("pink");
+      pinkbtn = new JButton("pink");
       pinkbtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             String str = e.getActionCommand();
-            changeColor(str);
+            getBtColor("pink");
          }
       });
       pinkbtn.setBackground(Color.pink);
       pinkbtn.setBounds(118, 33, 50, 23);
       toolBox.add(pinkbtn);
 
-      JButton eraserbtn = new JButton("eraser");
+      eraserbtn = new JButton("eraser");
       eraserbtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
             String str = e.getActionCommand();
-            changeColor(str);
+            getBtColor("white");
          }
       });
       eraserbtn.setBackground(Color.white);
       eraserbtn.setBounds(118, 0, 50, 23);
       toolBox.add(eraserbtn);
 
-      JButton clearbtn = new JButton("clear");
+      clearbtn = new JButton("clear");
       clearbtn.setBackground(Color.CYAN);
       clearbtn.setBounds(180, 20, 50, 23);
       clearbtn.addActionListener(new ActionListener() {
@@ -304,6 +396,15 @@ public class JavaGameClientView extends JFrame {
          net.start();
          TextSendAction action = new TextSendAction();
          btnSend.addActionListener(action);
+         
+         bluebtn.addActionListener(action);
+         redbtn.addActionListener(action);
+         yellowbtn.addActionListener(action);
+         blackbtn.addActionListener(action);
+         pinkbtn.addActionListener(action);
+         clearbtn.addActionListener(action);
+         eraserbtn.addActionListener(action);
+
          txtInput.addActionListener(action);
          txtInput.requestFocus();
          ImageSendAction action2 = new ImageSendAction();
@@ -322,7 +423,7 @@ public class JavaGameClientView extends JFrame {
 
    }
 
-public void paint(Graphics g) {
+   public void paint(Graphics g) {
       super.paint(g);
       // Image 영역이 가려졌다 다시 나타날 때 그려준다.
       gc.drawImage(panelImage, 0, 0, this);
@@ -368,6 +469,12 @@ public void paint(Graphics g) {
                case "500": // Mouse Event  닔 떊
                   DoMouseEvent(cm);
                   break;
+               case "600":
+                  setColor(cm.data);
+                  break;
+               case "700":
+                  clear();
+                  break;
                }
             } catch (IOException e) {
                AppendText("ois.readObject() error");
@@ -389,7 +496,7 @@ public void paint(Graphics g) {
    }
 
    public void clear(String str) {
-      if(str.equalsIgnoreCase("clear")) {
+      if (str.equalsIgnoreCase("clear")) {
          Graphics gc = panel.getGraphics();
          gc.clearRect(0, 0, panel.getWidth(), panel.getHeight());
          panel.repaint();
@@ -403,8 +510,8 @@ public void paint(Graphics g) {
          SendObject(cm);
       }
    }
-   
-   public void clear(){
+
+   public void clear() {
       Graphics gc = panel.getGraphics();
       gc.clearRect(0, 0, panel.getWidth(), panel.getHeight());
       panel.repaint();
@@ -415,36 +522,58 @@ public void paint(Graphics g) {
       gc2.setColor(Color.blue);
       gc2.drawRect(0, 0, panel.getWidth() - 1, panel.getHeight() - 1);
    }
-   
-//   public void SendBtnEvent(ChatMsg cm) {
-//      cm.btn.actionPerformed();
-//   }
 
-//============================================= 버튼색바꾸기
-   public void changeColor(String str) {
-      if (str.equalsIgnoreCase("red"))
-         gc2.setColor(Color.red);
-      else if (str.equalsIgnoreCase("black"))
-         gc2.setColor(Color.black);
-      else if (str.equalsIgnoreCase("blue"))
-         gc2.setColor(Color.blue);
-      else if (str.equalsIgnoreCase("eraser"))
-         gc2.setColor(Color.white);
-      else if (str.equalsIgnoreCase("yellow"))
-         gc2.setColor(Color.yellow);
-      else if (str.equalsIgnoreCase("pink"))
-         gc2.setColor(Color.pink);
+
+   public void getBtColor(String color) {
+	  if(color.equals("red")) {
+		  gc2.setColor(Color.red);
+	  }else if(color.equals("blue")) {
+		  gc2.setColor(Color.blue);
+	  }else if(color.equals("yellow")) {
+		  gc2.setColor(Color.yellow);
+	  }else if(color.equals("black")) {
+		  gc2.setColor(Color.black);
+	  }else if(color.equals("pink")) {
+		  gc2.setColor(Color.pink);
+	  }else if(color.equals("white")) {
+		  gc2.setColor(Color.white);
+	  }
+      ChatMsg cm = new ChatMsg(UserName, "600", color);
+      SendObject(cm);
    }
-
+   
+   public void setColor(String color) {
+	  if(color.equals("red")) {
+		  gc2.setColor(Color.red);
+	  }else if(color.equals("blue")) {
+		  gc2.setColor(Color.blue);
+	  }else if(color.equals("yellow")) {
+		  gc2.setColor(Color.yellow);
+	  }else if(color.equals("black")) {
+		  gc2.setColor(Color.black);
+	  }else if(color.equals("pink")) {
+		  gc2.setColor(Color.pink);
+	  }else if(color.equals("white")) {
+		  gc2.setColor(Color.white);
+	  }
+   }
+   
 //=============================================== 
    // Mouse Event 수신 처리
    public void DoMouseEvent(ChatMsg cm) {
       if (cm.UserName.matches(UserName)) // 본인 것은 이미 Local 로 그렸다.
          return;
-      if(cm.code.matches("700"))
-         clear();
-      gc2.drawOval(cm.mouse_e.getX(), cm.mouse_e.getY(), pen_size, pen_size);
-      first_point = last_point;
+      if (cm.mouse_e.getID() == MouseEvent.MOUSE_PRESSED) {
+         ox = cm.mouse_e.getX();
+         oy = cm.mouse_e.getY();
+      }
+      ox = nx = cm.mouse_e.getX();
+      oy = ny = cm.mouse_e.getY();
+      gc2.drawLine(ox, oy, nx, ny);
+      ox = nx;
+      oy = ny;
+      
+//      gc2.fillOval(cm.mouse_e.getX(), cm.mouse_e.getY(), pen_size, pen_size);
       gc.drawImage(panelImage, 0, 0, panel);
    }
 
@@ -468,22 +597,20 @@ public void paint(Graphics g) {
          }
          lblMouseEvent.setText("mouseWheelMoved Rotation=" + e.getWheelRotation() + " pen_size = " + pen_size + " "
                + e.getX() + "," + e.getY());
-
       }
-
    }
 
    // Mouse Event Handler
    class MyMouseEvent implements MouseListener, MouseMotionListener {
-      @Override
-
+      
       public void mouseDragged(MouseEvent e) {
-         last_point = e.getPoint();
-         repaint();
-         lblMouseEvent.setText(e.getButton() + " mouseDragged " + e.getX() + "," + e.getY());// 醫뚰몴異쒕젰媛  뒫
-         gc2.drawLine(first_point.x, first_point.y, last_point.x, last_point.y);
-         first_point = last_point;
-
+         lblMouseEvent.setText(e.getButton() + " mouseDragged " + e.getX() + "," + e.getY());
+         
+         ox = nx = e.getX();
+         oy = ny = e.getY();
+         gc2.drawLine(ox, oy, nx, ny);
+         ox = nx;
+         oy = ny;
          // panelImnage는 paint()에서 이용한다.
          gc.drawImage(panelImage, 0, 0, panel);
          SendMouseEvent(e);
@@ -511,14 +638,13 @@ public void paint(Graphics g) {
 
       @Override
       public void mousePressed(MouseEvent e) {
-         first_point = e.getPoint();
-         old_point = e.getPoint();
+         ox = e.getX();
+         oy = e.getY();
          lblMouseEvent.setText(e.getButton() + " mousePressed " + e.getX() + "," + e.getY());
       }
 
       @Override
       public void mouseReleased(MouseEvent e) {
-         last_point = e.getPoint();
          repaint();
          lblMouseEvent.setText(e.getButton() + " mouseReleased " + e.getX() + "," + e.getY());
          // 드래그중 멈출시 보임
@@ -540,6 +666,7 @@ public void paint(Graphics g) {
             if (msg.contains("/exit")) // 종료 처리
                System.exit(0);
          }
+         
       }
    }
 
@@ -701,6 +828,4 @@ public void paint(Graphics g) {
          AppendText("SendObject Error");
       }
    }
-
-
 }

@@ -19,34 +19,17 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 
+
 public class ClientViewInit extends JFrame{
 	private Panel contentPane;
-	//JavaGameClientView view = new JavaGameClientView("username", "password", "ip_addr", "port_no");
+	private String UserName;
+
 	
-	public void makeClientView() {
-		setResizable(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 634);
-        makeContentPane();
-       // makeExitBtn("UserName");
-        
-        JavaGameClientView view = new JavaGameClientView("username", "password", "ip_addr", "port_no");
+	public ClientViewInit() {
+		makeContentPane();
 	}
-	   
+	
 	private void makeContentPane() {
-		JPanel contentPane = new JPanel() {
-	         public void paint(Graphics g) {
-	            Image MainScreen = new ImageIcon("src/image/mainimg.jpg").getImage();
-	            Dimension d = getSize();
-	            g.drawImage(MainScreen, 0, 0, d.width, d.height, null);
-	            setOpaque(false);
-	            super.paint(g);
-	         }
-	      };
-	      contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-	      setContentPane(contentPane);
-	      contentPane.setLayout(null);
 	
         JScrollPane scrollPane = new JScrollPane();
 		JTextPane textArea = new JTextPane();
@@ -55,7 +38,7 @@ public class ClientViewInit extends JFrame{
     	contentPane.add(scrollPane);
         scrollPane.setViewportView(textArea);
         textArea.setEditable(true);
-        textArea.setFont(new Font("援대┝泥 ", Font.PLAIN, 14));	   
+        textArea.setFont(new Font("", Font.PLAIN, 14));	   
         
         JTextField txtInput = new JTextField();
         txtInput.setBounds(244, 566, 301, 21);
@@ -66,7 +49,13 @@ public class ClientViewInit extends JFrame{
 		btnSend.setBounds(549, 555, 69, 40);
 		contentPane.add(btnSend);
 		setVisible(true);
+
+		JButton imgBtn = new JButton("+");
+        imgBtn.setBounds(176, 555, 50, 40);
+        contentPane.add(imgBtn);
+		
 	}
+
 
 	 	
 	

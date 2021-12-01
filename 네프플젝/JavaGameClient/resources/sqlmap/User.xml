@@ -9,6 +9,7 @@
         <result property="id" column="id"/>
         <result property="name" column="name"/>   
 		<result property="password" column="password"/>   
+		<result property="userimg" column="userimg"/>   
         
     </resultMap>
  
@@ -18,6 +19,10 @@
  
     <select id="selectById" parameterType="String" resultMap="result">
         SELECT id, name, password FROM User WHERE id = #{id}
+    </select>
+    
+    <select id="selectByUserImg" parameterType="String" resultMap="result">
+        SELECT id, userimg FROM User WHERE id = #{id}
     </select>
  
 </mapper>

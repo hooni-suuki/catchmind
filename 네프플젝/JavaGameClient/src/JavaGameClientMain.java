@@ -35,10 +35,6 @@ public class JavaGameClientMain extends JFrame {
 	private JTextField txtPassword;
 	private JFrame frame;
 
-	private ImageIcon TitleImg = new ImageIcon("src/image/lbimg.png");
-    Image img = TitleImg.getImage();
-	Image updateImg = img.getScaledInstance(500, 263, Image.SCALE_SMOOTH);
-	ImageIcon updateIcon = new ImageIcon(updateImg);
 
 	public JavaGameClientMain() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,10 +86,6 @@ public class JavaGameClientMain extends JFrame {
 		btnConnect.setBounds(258, 325, 205, 38);
 		ComponentPanel.add(btnConnect);
 		
-		JLabel title = new JLabel(updateIcon);
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setBounds(190, 10, 312, 131);
-		ComponentPanel.add(title);
 		
 		JButton exitBtn = new JButton("EXIT");
 		exitBtn.setBounds(759, 494, 106, 38);
@@ -137,7 +129,7 @@ public class JavaGameClientMain extends JFrame {
 			
 			User user = userDao.selectByID(username);
 			try {
-				if(!user.getId().equals(username)) {
+				if(!user.getId().equals(username)) { 
 					JOptionPane.showMessageDialog(null, "계정이 틀렸습니다..");
 				}
 				else if(!user.getPassword().equals(password)){
@@ -145,9 +137,7 @@ public class JavaGameClientMain extends JFrame {
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "로그인~!~!~!");
-					//JavaGameClientView view = new JavaGameClientView(username, password, ip_addr, port_no);
-					ClientViewInit init = new ClientViewInit();
-					init.makeClientView();
+					JavaGameClientView view = new JavaGameClientView(username, password, ip_addr, port_no);
 					setVisible(false);
 				}
 			} catch (Exception e2) {
