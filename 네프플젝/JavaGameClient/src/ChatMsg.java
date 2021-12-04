@@ -17,11 +17,15 @@ class ChatMsg implements Serializable {
 	public int pen_size; // pen size
 	
 	public String color;
+	public int stroke;
 	
 	public ChatMsg(String UserName, String code, String msg) {
 		this.code = code;
 		this.UserName = UserName;
 		this.data = msg;
 	}
-
+//	public ChatMsg(String Username, int stroke) {
+//		this.UserName = Username;
+//		this.stroke = stroke;
+//	}
 }

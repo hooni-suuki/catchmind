@@ -189,6 +189,13 @@ public class JavaGameServer extends JFrame {
 				AppendText("userService error");
 			}
 		}
+		public void Start() {
+			UserService user = (UserService) user_vc.get(0);
+			AppendText(user + "님이" + "게임을 시작하셨습니다.");
+			String msg =  "[" + user + "]가 게임을 시작하셨습니다.\n";
+			WriteAll(msg); 
+			
+		}
 
 		public void Login() {
 			AppendText("새로운 참가자 " + UserName + " 입장.");
@@ -232,6 +239,7 @@ public class JavaGameServer extends JFrame {
 		}
 
 		// Windows 처럼 message 제외한 나머지 부분은 NULL 로 만들기 위한 함수
+		
 		public byte[] MakePacket(String msg) {
 			byte[] packet = new byte[BUF_LEN];
 			byte[] bb = null;
@@ -248,6 +256,7 @@ public class JavaGameServer extends JFrame {
 				packet[i] = bb[i];
 			return packet;
 		}
+		
 
 		// UserService Thread가 담당하는 Client 에게 1:1 전송
 		public void WriteOne(String msg) {
@@ -408,8 +417,9 @@ public class JavaGameServer extends JFrame {
 					} else if (cm.code.matches("400")) { // logout message 처리
 						Logout();
 						break;
-					}else if(cm.code.matches("700")){
-						WriteAllObject(cm);
+					}else if(cm.code.matches("800")){
+						UserName = cm.UserName;
+						Start();
 					}
 					else { // 300, 500, ... 기타 object는 모두 방송한다.
 						WriteAllObject(cm);
@@ -431,5 +441,6 @@ public class JavaGameServer extends JFrame {
 			} // while
 		} // run
 	}
+
 
 }

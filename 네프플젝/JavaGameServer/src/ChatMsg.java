@@ -9,12 +9,14 @@ import java.awt.Color;
 
 class ChatMsg implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public String code; // 100:로그인, 400:로그아웃, 200:채팅메시지, 300:Image, 500: Mouse Event
+	public String code; // 100:로그인, 400:로그아웃, 200:채팅메시지, 300:Image, 500: Mouse Event 600:color ,700: clear 
 	public String UserName;
 	public String data;
 	public ImageIcon img;
 	public MouseEvent mouse_e;
 	public int pen_size; // pen size
+	public int stroke;
+	
 	Color color;
 
 	public ChatMsg(String UserName, String code, String msg) {
