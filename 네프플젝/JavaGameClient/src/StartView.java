@@ -29,7 +29,6 @@ public class StartView extends JFrame {
 	private JButton LoginBtn;
 	static StartView frame = new StartView();
 	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.png");
-
 	private Audio backAudio;
 	/**
 	 * Launch the application.
