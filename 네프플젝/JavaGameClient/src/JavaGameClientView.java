@@ -90,6 +90,7 @@ public class JavaGameClientView extends JFrame {
    Point start = null, end = null;
    String fg = "free";
    Figure figure = new Figure();
+   GameInfo gInfo = new GameInfo();
 
    /**
     * Create the frame.
@@ -207,7 +208,7 @@ public class JavaGameClientView extends JFrame {
       JButton EXITBtn = new JButton("EXIT");
       EXITBtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            ChatMsg msg = new ChatMsg(UserName, "400", "Bye");
+            ChatMsg msg = new ChatMsg(UserName, "400", "Bye", gInfo.getGameStatus(), gInfo.getGameUserName());
             SendObject(msg);
             System.exit(0);
          }
@@ -353,7 +354,9 @@ public class JavaGameClientView extends JFrame {
       startbtn.setBounds(638, 398, 128, 40);
       startbtn.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            ChatMsg cm = new ChatMsg(UserName, "800", "GameStart");
+        	gInfo.setGameStatus("t");
+        	gInfo.setGameUserName(UserName);
+            ChatMsg cm = new ChatMsg(UserName, "800", figure.getFigure(), gInfo.getGameStatus(), gInfo.getGameUserName());
             SendObject(cm);
          }
       });
@@ -402,7 +405,7 @@ public class JavaGameClientView extends JFrame {
       pen_size_plus.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
 
-            ChatMsg cm = new ChatMsg(UserName, "900", "stroke_szie++");
+            ChatMsg cm = new ChatMsg(UserName, "900", "stroke_szie++", gInfo.getGameStatus(), gInfo.getGameUserName());
             SendObject(cm);
          }
       });
@@ -412,7 +415,7 @@ public class JavaGameClientView extends JFrame {
       pen_size_minus.setFont(new Font("굴림", Font.PLAIN, 15));
       pen_size_minus.addActionListener(new ActionListener() {
          public void actionPerformed(ActionEvent e) {
-            ChatMsg cm = new ChatMsg(UserName, "900", "stroke_szie--");
+            ChatMsg cm = new ChatMsg(UserName, "900", "stroke_szie--", gInfo.getGameStatus(), gInfo.getGameUserName());
             SendObject(cm);
          }
       });
@@ -433,7 +436,7 @@ public class JavaGameClientView extends JFrame {
          ois = new ObjectInputStream(socket.getInputStream());
 
          // SendMessage("/login " + UserName);
-         ChatMsg obcm = new ChatMsg(UserName, "100", "Hello");
+         ChatMsg obcm = new ChatMsg(UserName, "100", "Hello", gInfo.getGameStatus(), gInfo.getGameUserName());
          SendObject(obcm);
 
          ListenNetwork net = new ListenNetwork();
@@ -492,7 +495,7 @@ public class JavaGameClientView extends JFrame {
                   break;
                if (obcm instanceof ChatMsg) {
                   cm = (ChatMsg) obcm;
-                  msg = String.format("[%s]\n%s", cm.UserName, cm.data);
+                  msg = String.format("[%s]\n%s", cm.UserName, cm.data, cm.gStatus, cm.gGameUserName);
                } else
                   continue;
                switch (cm.code) {
@@ -519,7 +522,12 @@ public class JavaGameClientView extends JFrame {
                   clear();
                   break;
                case "800":
-                  Start();
+            	  if (cm.UserName.equals(UserName))
+                      AppendTextR("[" + cm.UserName + "님이 게임을 시작하셨습니다.]");
+                  else
+                      AppendText("[" + cm.UserName + "님이 게임을 시작하셨습니다.1]");
+            	      setgInfo(cm);
+                    break;
                case "900":
                   if (cm.data.equals("stroke_szie++"))
                      if (stroke < 12)
@@ -570,15 +578,20 @@ public class JavaGameClientView extends JFrame {
          gc3.fillRect(0, 0, panel.getWidth(), panel.getHeight());
          gc3.setColor(Color.blue);
          gc3.drawRect(0, 0, panel.getWidth() - 1, panel.getHeight() - 1);
-         ChatMsg cm = new ChatMsg(UserName, "700", "clear");
+         ChatMsg cm = new ChatMsg(UserName, "700", "clear", gInfo.getGameStatus(), gInfo.getGameUserName());
          SendObject(cm);
       }
    }
 
    public void Start() {
-      ChatMsg cm = new ChatMsg(UserName, "800", "gamestart");
+      ChatMsg cm = new ChatMsg(UserName, "800", "gameStart", gInfo.getGameStatus(), gInfo.getGameUserName());
       SendObject(cm);
    }
+   
+   public void setgInfo(ChatMsg cm) {
+	   gInfo.setGameStatus(cm.gStatus);
+	   gInfo.setGameUserName(cm.gGameUserName);
+   }	
 
    public void clear() {
       Graphics gc = panel.getGraphics();
@@ -612,7 +625,7 @@ public class JavaGameClientView extends JFrame {
       } else if (color.equals("white")) {
          gc2.setColor(Color.white);
       }
-      ChatMsg cm = new ChatMsg(UserName, "600", color);
+      ChatMsg cm = new ChatMsg(UserName, "600", color, gInfo.getGameStatus(), gInfo.getGameUserName());
       SendObject(cm);
    }
 
@@ -637,38 +650,38 @@ public class JavaGameClientView extends JFrame {
    public void DoMouseEvent(ChatMsg cm) {
       if (cm.UserName.matches(UserName)) // 본인 것은 이미 Local 로 그렸다.
          return;
-      ((Graphics2D) gc2).setStroke(new BasicStroke(stroke));
       
-         if (cm.mouse_e.getID() == MouseEvent.MOUSE_PRESSED) {
-            ox = cm.mouse_e.getX();
-            oy = cm.mouse_e.getY();
-         }
-         nx = cm.mouse_e.getX();
-         ny = cm.mouse_e.getY();
-         int x = Math.min(ox, nx);
-         int y = Math.min(oy, ny);
-         int width = Math.abs(ox - nx);
-         int height = Math.abs(oy -ny);
-
-         if(cm.data.equals("circle")) {
-        	 gc2.drawOval(x, y, width, height);
-         }else if(cm.data.equals("square")) {
-        	 gc2.drawRect(x, y, width, height);
-         }else if(cm.data.equals("line")) {
-        	 gc2.drawLine(ox, oy, nx, ny);
-         }else if(cm.data.equals("free")) {
-             gc2.drawLine(ox, oy, nx, ny);
-             ox = nx;
-             oy = ny;
-         }
-         gc.drawImage(panelImage, 0, 0, panel);
+	  ((Graphics2D) gc2).setStroke(new BasicStroke(stroke));
+	  if (cm.mouse_e.getID() == MouseEvent.MOUSE_PRESSED) {
+		  ox = cm.mouse_e.getX();
+		  oy = cm.mouse_e.getY();
+	  }
+	  nx = cm.mouse_e.getX();
+	  ny = cm.mouse_e.getY();
+	  int x = Math.min(ox, nx);
+	  int y = Math.min(oy, ny);
+	  int width = Math.abs(ox - nx);
+	  int height = Math.abs(oy -ny);
+	  
+	  if(cm.data.equals("circle")) {
+		  gc2.drawOval(x, y, width, height);
+	  }else if(cm.data.equals("square")) {
+		  gc2.drawRect(x, y, width, height);
+	  }else if(cm.data.equals("line")) {
+		  gc2.drawLine(ox, oy, nx, ny);
+	  }else if(cm.data.equals("free")) {
+		  gc2.drawLine(ox, oy, nx, ny);
+		  ox = nx;
+		  oy = ny;
+	  }
+	  gc.drawImage(panelImage, 0, 0, panel);
+  }
          
         	 
        
-   }
 
    public void SendMouseEvent(MouseEvent e) {
-      ChatMsg cm = new ChatMsg(UserName, "500", figure.getFigure());
+      ChatMsg cm = new ChatMsg(UserName, "500", figure.getFigure(), gInfo.getGameStatus(), gInfo.getGameUserName());
       cm.mouse_e = e;
       SendObject(cm);
    }
@@ -677,22 +690,45 @@ public class JavaGameClientView extends JFrame {
    class MyMouseEvent implements MouseListener, MouseMotionListener {
 
       public void mouseDragged(MouseEvent e) {
-         lblMouseEvent.setText(e.getButton() + " mouseDragged " + e.getX() + "," + e.getY());
+         
+    	 lblMouseEvent.setText(e.getButton() + " mouseDragged " + e.getX() + "," + e.getY());
          ((Graphics2D) gc2).setStroke(new BasicStroke(stroke));
          String fg = figure.getFigure();
-
-         if (fg.equals("free")) {
-            nx = e.getX();
-            ny = e.getY();
-            gc2.drawLine(ox, oy, nx, ny);
-            ox = nx;
-            oy = ny;
-            // panelImnage는 paint()에서 이용한다.
-            gc.drawImage(panelImage, 0, 0, panel);
-            SendMouseEvent(e);
-            // panelImnage는 paint()에서 이용한다.
+         
+         if(gInfo.getGameStatus().equals("t")) {
+        	 if(gInfo.getGameUserName().equals(UserName)) {
+        		 if (fg.equals("free")) {
+        	            nx = e.getX();
+        	            ny = e.getY();
+        	            gc2.drawLine(ox, oy, nx, ny);
+        	            ox = nx;
+        	            oy = ny;
+        	            // panelImnage는 paint()에서 이용한다.
+        	            gc.drawImage(panelImage, 0, 0, panel);
+        	            SendMouseEvent(e);
+        	            // panelImnage는 paint()에서 이용한다.
+    	         }else {
+    	        	 //
+    	         }
+        	 }else {
+        		 return;
+        	 }
          }else {
+        	 if (fg.equals("free")) {
+                 nx = e.getX();
+                 ny = e.getY();
+                 gc2.drawLine(ox, oy, nx, ny);
+                 ox = nx;
+                 oy = ny;
+                 // panelImnage는 paint()에서 이용한다.
+                 gc.drawImage(panelImage, 0, 0, panel);
+                 SendMouseEvent(e);
+                 // panelImnage는 paint()에서 이용한다.
+              }else {
+              }
          }
+         
+         
       }
 
       @Override
@@ -721,6 +757,13 @@ public class JavaGameClientView extends JFrame {
          ox = e.getX();
          oy = e.getY();
          lblMouseEvent.setText(e.getButton() + " mousePressed " + e.getX() + "," + e.getY());
+         if(gInfo.getGameStatus().equals("t")) {
+        	 if(gInfo.getGameUserName().equals(UserName)) {
+        	 }else {
+        		 return;
+        	 }
+         }else {
+         }
          SendMouseEvent(e);
       }
 
@@ -736,17 +779,35 @@ public class JavaGameClientView extends JFrame {
          int width = Math.abs(ox - nx);
          int height = Math.abs(oy -ny);
          String fg = figure.getFigure();
-
-         if (!fg.equals("free")) {
-            if (fg.equals("circle")) {
-               gc2.drawOval(x, y, width, height);
-            } else if (fg.equals("square")) {
-               gc2.drawRect(x, y, width, height);
-            } else if (fg.equals("line")) {
-               gc2.drawLine(ox,oy, nx, ny);
-            }
-            gc2.drawImage(panelImage, 0, 0, panel);
-            repaint();
+         
+         if(gInfo.getGameStatus().equals("t")) {
+        	 if(gInfo.getGameUserName().equals(UserName)) {
+        		 if (!fg.equals("free")) {
+        	            if (fg.equals("circle")) {
+        	               gc2.drawOval(x, y, width, height);
+        	            } else if (fg.equals("square")) {
+        	               gc2.drawRect(x, y, width, height);
+        	            } else if (fg.equals("line")) {
+        	               gc2.drawLine(ox,oy, nx, ny);
+        	            }
+        	            gc2.drawImage(panelImage, 0, 0, panel);
+        	            repaint();
+        	         }
+        	 }else {
+        		 return;
+        	 }
+         }else {
+        	 if (!fg.equals("free")) {
+                 if (fg.equals("circle")) {
+                    gc2.drawOval(x, y, width, height);
+                 } else if (fg.equals("square")) {
+                    gc2.drawRect(x, y, width, height);
+                 } else if (fg.equals("line")) {
+                    gc2.drawLine(ox,oy, nx, ny);
+                 }
+                 gc2.drawImage(panelImage, 0, 0, panel);
+                 repaint();
+              }
          }
          SendMouseEvent(e);
       }
@@ -783,7 +844,7 @@ public class JavaGameClientView extends JFrame {
             fd.setVisible(true);
             // System.out.println(fd.getDirectory() + fd.getFile());
             if (fd.getDirectory().length() > 0 && fd.getFile().length() > 0) {
-               ChatMsg obcm = new ChatMsg(UserName, "300", "IMG");
+               ChatMsg obcm = new ChatMsg(UserName, "300", "IMG", gInfo.getGameStatus(), gInfo.getGameUserName());
                ImageIcon img = new ImageIcon(fd.getDirectory() + fd.getFile());
                obcm.img = img;
                SendObject(obcm);
@@ -902,7 +963,7 @@ public class JavaGameClientView extends JFrame {
 //         byte[] bb;
 //         bb = MakePacket(msg);
 //         dos.write(bb, 0, bb.length);
-         ChatMsg obcm = new ChatMsg(UserName, "200", msg);
+         ChatMsg obcm = new ChatMsg(UserName, "200", msg, gInfo.getGameStatus(), gInfo.getGameUserName());
          oos.writeObject(obcm);
       } catch (IOException e) {
          // AppendText("dos.write() error");
