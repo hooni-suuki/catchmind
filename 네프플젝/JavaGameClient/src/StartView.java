@@ -28,12 +28,7 @@ public class StartView extends JFrame {
 	private JPanel ViewPane;
 	private JButton LoginBtn;
 	static StartView frame = new StartView();
-	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.png");
-	private ImageIcon TitleImg = new ImageIcon("src/image/lbimg.png");
-
-    Image img = TitleImg.getImage();
-	Image updateImg = img.getScaledInstance(500, 263, Image.SCALE_SMOOTH);
-	ImageIcon updateIcon = new ImageIcon(updateImg);
+	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.jpg");
 	
 	private Audio backAudio;
 	/**
@@ -74,7 +69,7 @@ public class StartView extends JFrame {
 
 		JPanel ViewPane = new JPanel() {
 		public void paint(Graphics g) {
-			Image MainScreen = new ImageIcon("src/image/mainimg.jpeg").getImage();
+			Image MainScreen = new ImageIcon("src/image/mainimg.jpg").getImage();
 			Dimension d = getSize();
 			g.drawImage(MainScreen, 0, 0,d.width,d.height, null);
 			setOpaque(false);
@@ -93,17 +88,13 @@ public class StartView extends JFrame {
 		ViewPane.add(panel);
 		panel.setLayout(null);
 		
-		//타이틀
-		JLabel TitleLabel = new JLabel(updateIcon); 
-		TitleLabel.setBounds(145, 10, 396, 186);
-		panel.add(TitleLabel);
-		TitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
 		//사실 의미없는 로그인버튼
 		LoginBtn = new JButton(StartBtn);
 		LoginBtn.setBounds(250, 292, 213, 71);
 		LoginBtn.setContentAreaFilled(false);//踰꾪듉 �궡�슜 �븞梨꾩�
 		LoginBtn.setOpaque(false);
+		LoginBtn.setBorderPainted(false);
+		LoginBtn.setContentAreaFilled(false);
 		panel.add(LoginBtn);
 		
 		//종료

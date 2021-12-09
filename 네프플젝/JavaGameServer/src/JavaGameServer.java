@@ -40,6 +40,7 @@ public class JavaGameServer extends JFrame {
 	private Socket client_socket; // accept() 에서 생성된 client 소켓
 	private Vector UserVec = new Vector(); // 연결된 사용자를 저장할 벡터
 	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
+	
 
 	/**
 	 * Launch the application.
@@ -189,13 +190,6 @@ public class JavaGameServer extends JFrame {
 				AppendText("userService error");
 			}
 		}
-		public void Start() {
-			UserService user = (UserService) user_vc.get(0);
-			AppendText(user + "님이" + "게임을 시작하셨습니다.");
-			String msg =  "[" + user + "]가 게임을 시작하셨습니다.\n";
-			WriteAll(msg); 
-			
-		}
 
 		public void Login() {
 			AppendText("새로운 참가자 " + UserName + " 입장.");
@@ -239,7 +233,6 @@ public class JavaGameServer extends JFrame {
 		}
 
 		// Windows 처럼 message 제외한 나머지 부분은 NULL 로 만들기 위한 함수
-		
 		public byte[] MakePacket(String msg) {
 			byte[] packet = new byte[BUF_LEN];
 			byte[] bb = null;
@@ -256,7 +249,6 @@ public class JavaGameServer extends JFrame {
 				packet[i] = bb[i];
 			return packet;
 		}
-		
 
 		// UserService Thread가 담당하는 Client 에게 1:1 전송
 		public void WriteOne(String msg) {
@@ -265,7 +257,7 @@ public class JavaGameServer extends JFrame {
 //				byte[] bb;
 //				bb = MakePacket(msg);
 //				dos.write(bb, 0, bb.length);
-				ChatMsg obcm = new ChatMsg("SERVER", "200", msg);
+				ChatMsg obcm = new ChatMsg("SERVER", "200", msg, "", "");
 				oos.writeObject(obcm);
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");
@@ -289,7 +281,7 @@ public class JavaGameServer extends JFrame {
 		// 귓속말 전송
 		public void WritePrivate(String msg) {
 			try {
-				ChatMsg obcm = new ChatMsg("귓속말", "200", msg);
+				ChatMsg obcm = new ChatMsg("귓속말", "200", msg, "", "");
 				oos.writeObject(obcm);
 			} catch (IOException e) {
 				AppendText("dos.writeObject() error");
@@ -417,11 +409,7 @@ public class JavaGameServer extends JFrame {
 					} else if (cm.code.matches("400")) { // logout message 처리
 						Logout();
 						break;
-					}else if(cm.code.matches("800")){
-						UserName = cm.UserName;
-						Start();
-					}
-					else { // 300, 500, ... 기타 object는 모두 방송한다.
+					} else { // 300, 500, ... 기타 object는 모두 방송한다.
 						WriteAllObject(cm);
 					} 
 				} catch (IOException e) {
@@ -441,6 +429,5 @@ public class JavaGameServer extends JFrame {
 			} // while
 		} // run
 	}
-
 
 }

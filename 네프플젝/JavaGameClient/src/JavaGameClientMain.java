@@ -48,7 +48,7 @@ public class JavaGameClientMain extends JFrame {
 		
 		JPanel contentPane = new JPanel() {
 			public void paint(Graphics g) {
-				Image MainScreen = new ImageIcon("src/image/mainimg.jpeg").getImage();
+				Image MainScreen = new ImageIcon("src/image/mainimg.jpg").getImage();
 				Dimension d = getSize();
 				g.drawImage(MainScreen, 0, 0,d.width,d.height, null);
 				setOpaque(false);
@@ -99,17 +99,6 @@ public class JavaGameClientMain extends JFrame {
 		exitBtn.setBounds(759, 494, 106, 38);
 		contentPane.add(exitBtn);
 		
-		JButton backBtn = new JButton("Back");
-		backBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				StartView Init = new StartView();
-				//Init.setVisible(true);
-			}
-		});
-		
-		backBtn.setBounds(12, 509, 95, 23);
-		contentPane.add(backBtn);
-
 		exitBtn.addActionListener(new ActionListener() {
 			
 			@Override
@@ -120,8 +109,6 @@ public class JavaGameClientMain extends JFrame {
 		});
 		
 		Myaction action = new Myaction();
-//		txtPassword.addActionListener(action);
-//		txtUserName.addActionListener(action); �씠嫄� �몢以� �쓽誘멸� 萸먯�
 		
 		btnConnect.addActionListener(action); //connect
 	}
@@ -146,7 +133,6 @@ public class JavaGameClientMain extends JFrame {
 				else {
 					JOptionPane.showMessageDialog(null, "로그인~!~!~!");
 					JavaGameClientView view = new JavaGameClientView(username, password, ip_addr, port_no);
-					
 					setVisible(false);
 				}
 			} catch (Exception e2) {

@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FileRead {
+	
 	private File file;
 	private final String dir="src"+File.separator+"answer.txt";
 	private ArrayList<String> list;
@@ -39,5 +41,18 @@ public class FileRead {
 	
 	public ArrayList<String> getAnswer() {
 		return this.list;
+	}
+	
+	
+	
+	public static void main(String[] args) {
+		FileRead f = new FileRead();
+		f.read();
+		
+		ArrayList<String> answerList;
+		answerList = f.getAnswer();
+		
+		for(int i = 0; i <answerList.size(); i++)
+		System.out.println(answerList.get(i));
 	}
 }
