@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
@@ -40,7 +41,6 @@ public class JavaGameServer extends JFrame {
 	private Socket client_socket; // accept() 에서 생성된 client 소켓
 	private Vector UserVec = new Vector(); // 연결된 사용자를 저장할 벡터
 	private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
-	
 
 	/**
 	 * Launch the application.
@@ -214,6 +214,7 @@ public class JavaGameServer extends JFrame {
 					user.WriteOne(str);
 			}
 		}
+
 		// 모든 User들에게 Object를 방송. 채팅 message와 image object를 보낼 수 있다
 		public void WriteAllObject(Object ob) {
 			for (int i = 0; i < user_vc.size(); i++) {
@@ -222,7 +223,7 @@ public class JavaGameServer extends JFrame {
 					user.WriteOneObject(ob);
 			}
 		}
-
+		
 		// 나를 제외한 User들에게 방송. 각각의 UserService Thread의 WriteONe() 을 호출한다.
 		public void WriteOthers(String str) {
 			for (int i = 0; i < user_vc.size(); i++) {
@@ -298,19 +299,19 @@ public class JavaGameServer extends JFrame {
 				Logout(); // 에러가난 현재 객체를 벡터에서 지운다
 			}
 		}
+
 		public void WriteOneObject(Object ob) {
 			try {
-			    oos.writeObject(ob);
-			} 
-			catch (IOException e) {
-				AppendText("oos.writeObject(ob) error");		
+				oos.writeObject(ob);
+			} catch (IOException e) {
+				AppendText("oos.writeObject(ob) error");
 				try {
 					ois.close();
 					oos.close();
 					client_socket.close();
 					client_socket = null;
 					ois = null;
-					oos = null;				
+					oos = null;
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -318,7 +319,7 @@ public class JavaGameServer extends JFrame {
 				Logout();
 			}
 		}
-		
+
 		public void run() {
 			while (true) { // 사용자 접속을 계속해서 받기 위해 while문
 				try {
@@ -397,21 +398,29 @@ public class JavaGameServer extends JFrame {
 									}
 									// /to 빼고.. [귓속말] [user1] Hello user2..
 									user.WritePrivate(args[0] + " " + msg2 + "\n");
-									//user.WriteOne("[귓속말] " + args[0] + " " + msg2 + "\n");
+									// user.WriteOne("[귓속말] " + args[0] + " " + msg2 + "\n");
 									break;
 								}
 							}
 						} else { // 일반 채팅 메시지
 							UserStatus = "O";
-							//WriteAll(msg + "\n"); // Write All
+							// WriteAll(msg + "\n"); // Write All
 							WriteAllObject(cm);
 						}
 					} else if (cm.code.matches("400")) { // logout message 처리
 						Logout();
 						break;
+					} else if (cm.code.matches("800")) {
+						FileRead f= new FileRead();
+						UserName = cm.UserName;
+						f.read();
+						ArrayList<String> answerList;
+						answerList = f.getAnswer();
+						WriteOne(answerList.get((int) (Math.random() *answerList.size())));
+						
 					} else { // 300, 500, ... 기타 object는 모두 방송한다.
 						WriteAllObject(cm);
-					} 
+					}
 				} catch (IOException e) {
 					AppendText("ois.readObject() error");
 					try {
