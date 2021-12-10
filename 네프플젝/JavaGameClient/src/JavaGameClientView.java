@@ -530,7 +530,7 @@ public class JavaGameClientView extends JFrame {
 						else
 							AppendText("[" + cm.UserName + "님이 게임을 시작하셨습니다. ]");
 						setgInfo(cm);
-	                    btnBoolean(cm);
+						btnBoolean(cm);
 						break;
 					case "900":
 						if (cm.data.equals("stroke_szie++"))
@@ -561,9 +561,9 @@ public class JavaGameClientView extends JFrame {
 	}
 
 	public void btnBoolean(ChatMsg cm) {
-//		if (cm.gStatus.equals("t")) {
+		if (cm.gStatus.equals("t")) {
 			startbtn.setEnabled(false);
-//		}else
+		} else
 			startbtn.setEnabled(true);
 	}
 
