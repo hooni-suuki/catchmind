@@ -1,123 +1,14 @@
+게임시작 버튼을 누르면 채팅창에 [시작버튼 누른 유저] 님이 게임을 시작하였습니다.
+if(게임진행중인경우)
+    if(게임진행유저가 아닌경우)
+      return false;
+버튼 누른 유저 외에 나머지는 그림을 그릴 수 없게 블럭
 
-import java.awt.EventQueue;
+정답을 맞춘 유저는 그림을 그릴 수 있게 해줌
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.Color;
-import java.awt.Dimension;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import javax.swing.JLayeredPane;
+문제가 끝나면 게임 시작버튼 활성화 및 전부 그림을 그릴 수 있게 해줌
 
-public class StartView extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	private JPanel ViewPane;
-	private JButton LoginBtn;
-	static StartView frame = new StartView();
-	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.png");
-	private Audio backAudio;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					
-					frame.setVisible(true);
-					frame.setTitle("CatchMind");
-					frame.setLocationRelativeTo(null);
-					frame.setResizable(false);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-
-	public StartView() {
-		
-		/*
-		 * try { backAudio = new Audio("src/Audio/InitBGM.wav", true); //배경음악넣었움
-		 * backAudio.start(); } catch (Exception e) {
-		 * JOptionPane.showMessageDialog(null, "재생이 안돼..?"); System.exit(0); }
-		 */
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 891, 579);
-
-		JPanel ViewPane = new JPanel() {
-		public void paint(Graphics g) {
-			Image MainScreen = new ImageIcon("src/image/mainimg.jpg").getImage();
-			Dimension d = getSize();
-			g.drawImage(MainScreen, 0, 0,d.width,d.height, null);
-			setOpaque(false);
-			super.paint(g);
-		}
-		};
-		
-		ViewPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(ViewPane);
-		ViewPane.setLayout(null);
-		
-		//컴퍼넌트엮어놓은 패패널
-		JPanel panel = new JPanel();
-		panel.setBounds(109, 114, 704, 373);
-		panel.setOpaque(false);
-		ViewPane.add(panel);
-		panel.setLayout(null);
-		
-
-		
-		//사실 의미없는 로그인버튼
-		LoginBtn = new JButton(StartBtn);
-		LoginBtn.setBounds(250, 292, 213, 71);
-		LoginBtn.setContentAreaFilled(false);//踰꾪듉 �궡�슜 �븞梨꾩�
-		LoginBtn.setOpaque(false);
-		panel.add(LoginBtn);
-		
-		//종료
-		JButton ExitBtn = new JButton("Exit");
-		ExitBtn.setBounds(789, 509, 76, 23);
-		ExitBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		ViewPane.add(ExitBtn);
-		
-		Myaction action = new Myaction(); 
-		LoginBtn.addActionListener(action); //로그인화면으로
-
-	}
-	
-
-	public class Myaction implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			JavaGameClientMain login =new JavaGameClientMain();
-			login.setVisible(true);//JavaGameClientMain 실행
-			frame.dispose();//프레임없애고 넘겨줌
-		}
-	}
-}
+소수점 둘재자리
+박현숙 국제터미널

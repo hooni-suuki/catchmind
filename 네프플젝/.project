@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<projectDescription>
-	<name>네프플젝</name>
-	<comment></comment>
-	<projects>
-	</projects>
-	<buildSpec>
-	</buildSpec>
-	<natures>
-	</natures>
-</projectDescription>
+select `tce`.`COM_EMP_SEQ` AS `EMP_SEQ`\n`tce`.`COM_EMP_ID` AS `EMP_ID`\n`tce`.`COM_EMP_ERP_ID` AS `ERP_EMP_NUM`\n`tce`.`COM_EMP_LOGIN_ID` AS `EMP_LOGIN_ID`\n`tce`.`COM_EMP_NM` AS `EMP_NM`\n`tce`.`COM_EMP_DEPT_CD` AS `EMP_DEPT_CD`\n`tce`.`COM_EMP_DEPT_NM` AS `EMP_DEPT_NM`\n`tce`.`COM_EMP_POSITION_CD` AS `EMP_POSITION_CD`\n`tce`.`COM_EMP_POSITION_NM` AS `EMP_POSITION_NM`\n`tce`.`COM_EMP_DUTY_CD` AS `EMP_DUTY_CD`\n`tce`.`COM_EMP_DUTY_NM` AS `EMP_DUTY_NM`\n`tce`.`COM_EMP_POSITION_ORD` AS `EMP_POSITION_ORD`\n`tce`.`COM_EMP_DUTY_ORD` AS `EMP_DUTY_ORD`\n`tce`.`COM_EMP_EMAIL` AS `EMP_EMAIL`\n`tce`.`COM_EMP_EMAIL_ADDR` AS `EMP_EMAIL_ADDR`\n`tce`.`COM_EMP_EMAIL_DOMAIN` AS `EMP_EMAIL_DOMAIN`\n`tce`.`COM_EMP_JOC_DT` AS `EMP_JOC_DT`\n`tce`.`COM_EMP_BIRTH_DT` AS `EMP_BIRTH_DT`\n`tce`.`COM_EMP_GROUP_SEQ` AS `EMP_GROUP_SEQ` from `t_com_emp` `tce`
