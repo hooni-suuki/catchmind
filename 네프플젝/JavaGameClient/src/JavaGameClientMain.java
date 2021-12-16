@@ -1,5 +1,3 @@
-// JavaObjClient.java
-// ObjecStream �궗�슜�븯�뒗 梨꾪똿 Client
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -65,7 +63,7 @@ public class JavaGameClientMain extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JPanel ComponentPanel = new JPanel(); // attached all componenet 
+		JPanel ComponentPanel = new JPanel(); 
 		ComponentPanel.setBounds(109, 114, 704, 373);
 		contentPane.add(ComponentPanel);
 		ComponentPanel.setOpaque(false);
@@ -92,7 +90,7 @@ public class JavaGameClientMain extends JFrame {
 		ComponentPanel.add(lblIpAddress);
 		
 		JButton btnConnect = new JButton(StartBtn);
-		btnConnect.setContentAreaFilled(false);//踰꾪듉 �궡�슜 �븞梨꾩�
+		btnConnect.setContentAreaFilled(false);
 		btnConnect.setOpaque(false);
 		btnConnect.setBorderPainted(false);
 		btnConnect.setContentAreaFilled(false);

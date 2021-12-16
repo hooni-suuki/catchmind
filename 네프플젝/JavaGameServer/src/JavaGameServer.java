@@ -1,4 +1,3 @@
-//JavaObjServer.java ObjectStream 기반 채팅 Server
 
 import java.awt.EventQueue;
 

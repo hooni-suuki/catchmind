@@ -59,7 +59,7 @@ public class StartView extends JFrame {
 		
 		try {
 			backAudio = new Audio("src/Audio/InitBGM.wav", true); //배경음악넣었움
-//			backAudio.soundStart();
+			backAudio.soundStart();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "재생이 안돼..?");
 			System.exit(0);
@@ -89,7 +89,6 @@ public class StartView extends JFrame {
 		ViewPane.add(panel);
 		panel.setLayout(null);
 		
-		//사실 의미없는 로그인버튼
 		LoginBtn = new JButton(StartBtn);
 		LoginBtn.setBounds(250, 292, 213, 71);
 		LoginBtn.setContentAreaFilled(false);//踰꾪듉 �궡�슜 �븞梨꾩�

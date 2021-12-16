@@ -1,6 +1,4 @@
 
-// JavaObjClientView.java ObjecStram 湲곕컲 Client
-// 떎吏덉쟻 씤 梨꾪똿 李 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
