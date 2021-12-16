@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 class ChatMsg implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public String code; // 100:로그인, 400:로그아웃, 200:채팅메시지, 300:Image, 500: Mouse Event
+						// 600: 색상바꾸기 700: 화면 클리어 800: 게임시작 및 게임관련 메시지 900: 펜사이즈 증감
 	public String UserName;
 	public String data;
 	public String gStatus;

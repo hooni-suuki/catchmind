@@ -3,6 +3,7 @@
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import dao.UserDao;
@@ -18,6 +19,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -35,10 +37,13 @@ public class JavaGameClientMain extends JFrame {
 	private JTextField txtPassword;
 	private JFrame frame;
 
-	private ImageIcon TitleImg = new ImageIcon("src/image/lbimg.png");
-    Image img = TitleImg.getImage();
-	Image updateImg = img.getScaledInstance(500, 263, Image.SCALE_SMOOTH);
-	ImageIcon updateIcon = new ImageIcon(updateImg);
+	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.jpg");
+	private ImageIcon exbtn = new ImageIcon("src/image/exit.png");
+	
+	Image exitimg = exbtn.getImage();
+	Image exitimage = exitimg.getScaledInstance(50, 30, Image.SCALE_SMOOTH);
+	ImageIcon exiticon = new ImageIcon(exitimage);
+	
 
 	public JavaGameClientMain() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +77,7 @@ public class JavaGameClientMain extends JFrame {
 		txtUserName.setHorizontalAlignment(SwingConstants.CENTER);
 		txtUserName.setColumns(10);
 		
-		txtPassword = new JTextField();
+		txtPassword = new JPasswordField();
 		txtPassword.setBounds(311, 247, 204, 33);
 		ComponentPanel.add(txtPassword);
 		txtPassword.setHorizontalAlignment(SwingConstants.CENTER);
@@ -86,17 +91,21 @@ public class JavaGameClientMain extends JFrame {
 		lblIpAddress.setBounds(217, 247, 82, 33);
 		ComponentPanel.add(lblIpAddress);
 		
-		JButton btnConnect = new JButton("Connect");
-		btnConnect.setBounds(258, 325, 205, 38);
+		JButton btnConnect = new JButton(StartBtn);
+		btnConnect.setContentAreaFilled(false);//踰꾪듉 �궡�슜 �븞梨꾩�
+		btnConnect.setOpaque(false);
+		btnConnect.setBorderPainted(false);
+		btnConnect.setContentAreaFilled(false);
+		btnConnect.setBounds(250, 292, 213, 71);
 		ComponentPanel.add(btnConnect);
 		
-		JLabel title = new JLabel(updateIcon);
-		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setBounds(190, 10, 312, 131);
-		ComponentPanel.add(title);
-		
-		JButton exitBtn = new JButton("EXIT");
+		JButton exitBtn = new JButton(exiticon);
 		exitBtn.setBounds(759, 494, 106, 38);
+		exitBtn.setContentAreaFilled(false);
+		exitBtn.setOpaque(false);
+		exitBtn.setBorderPainted(false);
+		exitBtn.setFocusPainted(false);
+		exitBtn.setForeground(new Color(100, 209, 190));
 		contentPane.add(exitBtn);
 		
 		exitBtn.addActionListener(new ActionListener() {
@@ -112,6 +121,7 @@ public class JavaGameClientMain extends JFrame {
 		
 		btnConnect.addActionListener(action); //connect
 	}
+	
 	
 	class Myaction implements ActionListener 
 	{

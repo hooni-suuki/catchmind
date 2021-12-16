@@ -30,6 +30,12 @@ public class StartView extends JFrame {
 	static StartView frame = new StartView();
 	private ImageIcon StartBtn = new ImageIcon("src/image/startbtn.jpg");
 	
+	private ImageIcon exbtn = new ImageIcon("src/image/exit.png");
+	
+	Image exitimg = exbtn.getImage();
+	Image exitimage = exitimg.getScaledInstance(45, 30, Image.SCALE_SMOOTH);
+	ImageIcon exiticon = new ImageIcon(exitimage);
+	
 	private Audio backAudio;
 	/**
 	 * Launch the application.
@@ -38,7 +44,6 @@ public class StartView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
 					frame.setVisible(true);
 					frame.setTitle("CatchMind");
 					frame.setLocationRelativeTo(null);
@@ -50,15 +55,11 @@ public class StartView extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
-
 	public StartView() {
 		
 		try {
 			backAudio = new Audio("src/Audio/InitBGM.wav", true); //배경음악넣었움
-//			backAudio.start();
+//			backAudio.soundStart();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "재생이 안돼..?");
 			System.exit(0);
@@ -98,8 +99,13 @@ public class StartView extends JFrame {
 		panel.add(LoginBtn);
 		
 		//종료
-		JButton ExitBtn = new JButton("Exit");
+		JButton ExitBtn = new JButton(exiticon);
+		ExitBtn.setContentAreaFilled(false);
+		ExitBtn.setOpaque(false);
+		ExitBtn.setBorderPainted(false);
+		ExitBtn.setFocusPainted(false);
 		ExitBtn.setBounds(789, 509, 76, 23);
+		ExitBtn.setForeground(new Color(100, 209, 190));
 		ExitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);

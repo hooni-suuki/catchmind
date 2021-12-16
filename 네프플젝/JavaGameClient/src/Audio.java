@@ -23,13 +23,13 @@ public class Audio {
         }
     }
 
-    public void start() {
+    public void soundStart() {
         clip.setFramePosition(0);
         clip.start();
         if (isLoop) clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public void stop() {
+    public void soundStop() {
         clip.stop();
     }
 }
